@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'auth'], function(){
     Route::get('/', 'DashboardController@index')->name('admin.index');
+    Route::resource('/category', 'CategoryController', ['as'=>'admin']);
 });
 
 Route::get('/', function () {
