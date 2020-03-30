@@ -17,8 +17,12 @@ class CreatePostTagTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('post_id')->unsigned();
             $table->bigInteger('tag_id')->unsigned();
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('post_id')
+                ->references('id')->on('posts')
+                ->onDelete('cascade');
+            $table->foreign('tag_id')
+                ->references('id')->on('tags')
+                ->onDelete('cascade');;
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreatePostTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_tag');
+        Schema::dropIfExists('postTag');
     }
 }

@@ -17,8 +17,12 @@ class CreateChildCategoryPostTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('child_category_id')->unsigned();
             $table->bigInteger('post_id')->unsigned();
-            $table->foreign('child_category_id')->references('id')->on('child_categories');
-            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('child_category_id')
+                ->references('id')->on('child_categories')
+                ->onDelete('cascade');
+            $table->foreign('post_id')
+                ->references('id')->on('posts')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreateChildCategoryPostTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('child_category_post');
+        Schema::dropIfExists('child_categoryPost');
     }
 }

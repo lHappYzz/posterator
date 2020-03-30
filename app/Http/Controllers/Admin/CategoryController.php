@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Child_category;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator as Validator;
@@ -41,23 +42,8 @@ class CategoryController extends Controller
      * param  \Illuminate\Http\Request  $request
      * return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //validate input data
-        /*$request->validate([
-            "category_title" => "required|min:3|unique:categories,title",
-            "subcategory_title.*" => "distinct|unique:child_categories,title|nullable|min:3"
-        ]);*/
-        $validator = Validator::make($request->all(), [
-            "category_title" => "required|min:3|max:30|unique:categories,title",
-            "subcategory_title.*" => "distinct|different:category_title|unique:child_categories,title|nullable|min:3|max:30",
-        ]);
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-//        if($validator->fails()) dd($validator->getMessageBag());
         dd(['Validation passed', $request->all()]);
 
         $input = $request->all();
