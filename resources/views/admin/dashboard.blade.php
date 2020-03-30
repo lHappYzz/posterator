@@ -25,7 +25,7 @@
             </div>
         <div class="row">
             <div class="col-sm-6">
-                <a href="#" class="btn btn-block btn-outline-primary">Create category</a>
+                <a href="{{ route('admin.category.create') }}" class="btn btn-block btn-outline-primary">Create category</a>
                 <a href="#" class="list-group-item list-group-item-action">
                     <h4 class="list-group-item-heading">First category</h4>
                     <p class="llist-group-item-text">Count</p>
