@@ -44,15 +44,13 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        dd(['Validation passed', $request->all()]);
+//        dd(['Validation passed', $request->all()]);
 
-        $input = $request->all();
-        Category::create(['title'=>$input['category_title']]);
-        $parent = Category::where('title', $input['category_title'])->first();
-        foreach ($input['subcategory_title'] as $value){
-            if ($value != null)
-                Child_category::create(['title'=>$value, 'category_id'=>$parent->id]);
+        $category = Category::create(['title' => $request->category_title]);
+        foreach ($request->subcategory_title as $subcategory_title) {
+            if ($subcategory_title) Child_category::create(['title'=> $subcategory_title, 'category_id' => $category->id]);
         }
+
         return response('Created', 200);
     }
     /**
@@ -64,6 +62,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
+        dd('show method', $category);
     }
 
     /**
@@ -75,6 +74,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
+        dd('edit method', $category);
     }
 
     /**
@@ -87,6 +87,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         //
+        dd('update method', $category);
     }
 
     /**
@@ -98,5 +99,12 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        dd('destroy method', $category);
+        try {
+            $category->delete();
+        } catch (\Exception $e) {
+            return response('Something went wrong');
+        }
+        return response('Deleted', 200);
     }
 }

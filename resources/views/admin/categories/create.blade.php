@@ -18,7 +18,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Category title</span>
                 </div>
-                <input type="text" class="form-control @error('category_title') is-invalid @enderror" name="category_title" maxlength="30" value="{{ old('category_title') }}" placeholder="Forest">
+                <input autofocus type="text" class="form-control @error('category_title') is-invalid @enderror" name="category_title" maxlength="30" value="{{ old('category_title') }}" placeholder="Forest">
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="submit">Create</button>
                 </div>

@@ -7,9 +7,7 @@ function removeNewInput(e) {
     let parent = findAncestor(target, 'form-group');
     parent.remove();
 }
-//TODO:Знести все к чортової бабушки та переписати без ГОВНОкоду
 function addNewInput(e) {
-    // let subcatInputsCount = document.getElementsByName('subcategory_title').length;
     let subcatInputsCount = document.getElementsByClassName('input-group-text').length - 1;
     if (subcatInputsCount === 10) return false;
     let whatToPaste = '<div class="form-group">' +
@@ -26,16 +24,7 @@ function addNewInput(e) {
         '               </div>';
     let target = e.target;
     let parent = findAncestor(target, 'form-group');
-    // let parentClone = parent.cloneNode(true);
     parent.insertAdjacentHTML('afterEnd', whatToPaste);
-    // parent.insertAdjacentElement('afterEnd', whatToPaste);
-
-    //clear new input value and move focus on it
-    /*let parentCloneInput = parentClone.getElementsByClassName('form-control')[0];
-    parentCloneInput.className = 'form-control';
-    parentCloneInput.value = '';
-    parentCloneInput.name = 'subcategory_title[' + subcatInputsCount + ']';
-    parentCloneInput.focus();*/
 }
 function findAncestor (el, cls) {
     while ((el = el.parentElement) && !el.classList.contains(cls));
