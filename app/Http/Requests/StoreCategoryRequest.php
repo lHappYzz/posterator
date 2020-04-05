@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Category;
+use App\Child_category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -23,9 +26,18 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->get('_method') == 'put'){
+//            dd($this->all());
+            return [
+                "category_title" => [Rule::unique('categories', 'title')->ignore($this->category->id), 'required', 'min:3', 'max:30'],
+//                "subcategory_title.*.*" => "distinct|different:category_title|nullable|min:3|max:30",
+                "subcategory_title.*.*" => ['distinct', 'different:category_title', 'nullable', 'min:3', 'max:30'],
+                ];
+        }
         return [
             "category_title" => "required|min:3|max:30|unique:categories,title",
-            "subcategory_title.*" => "distinct|different:category_title|unique:child_categories,title|nullable|min:3|max:30",
+            "subcategory_title.*.*" => "distinct|different:category_title|unique:child_categories,title|nullable|min:3|max:30",
         ];
     }
+
 }

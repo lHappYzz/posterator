@@ -7,8 +7,6 @@ use App\Child_category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator as Validator;
 
 class CategoryController extends Controller
 {
@@ -44,14 +42,18 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-//        dd(['Validation passed', $request->all()]);
-
+//        dd([$request->all()]);
         $category = Category::create(['title' => $request->category_title]);
-        foreach ($request->subcategory_title as $subcategory_title) {
-            if ($subcategory_title) Child_category::create(['title'=> $subcategory_title, 'category_id' => $category->id]);
+        if ($request->subcategory_title && is_array($request->subcategory_title)){
+            foreach ($request->subcategory_title as $subcategory_title) {
+                foreach ($subcategory_title as $new_subcategory_title){
+                    if ($new_subcategory_title) Child_category::create(['title'=> $new_subcategory_title, 'category_id' => $category->id]);
+                }
+            }
         }
 
-        return response('Created', 200);
+        return redirect(route('admin.category.index'))
+            ->with(['success' => '"' . $category->title . '" category successfully created']);
     }
     /**
      * Display the specified resource.
@@ -74,7 +76,8 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
-        dd('edit method', $category);
+//        dd('edit method', $category);
+        return view('admin.categories.update', ['category' => $category]);
     }
 
     /**
@@ -84,10 +87,45 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(StoreCategoryRequest $request, Category $category)
     {
         //
-        dd('update method', $category);
+//        dd('update method', $category, $request->get('subcategory_title'));
+        $subcategories = $category->child_categories;
+        $category->update([
+            'title' => $request->get('category_title'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+//        dd($request->all());
+
+        foreach ($subcategories as $subcategory){
+            if (!$request->get('subcategory_title')) {
+                $subcategory->delete();
+            } else {
+                if (!array_key_exists($subcategory->title, $request->get('subcategory_title'))){
+                    $subcategory->delete();
+                }
+            }
+        }
+
+        if ($request->get('subcategory_title') && is_array($request->get('subcategory_title'))){
+            foreach ($request->subcategory_title as $old_subcategory_title => $subcategory_data){
+                foreach ($subcategory_data as $id => $new_subcategory_title) {
+                    if ($id != 0){
+                        $subcategory = $subcategories->where('id', $id)->first();
+                        $subcategory->title = $new_subcategory_title;
+                        $subcategory->save();
+                    } elseif ($id == 0){
+                        if ($new_subcategory_title) {
+                            Child_category::create(['title' => $new_subcategory_title, 'category_id' => $category->id]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return redirect(route('admin.category.edit', ['category' => $category]))
+            ->with(['success' => '"' . $category->title . '" category successfully updated']);
     }
 
     /**
@@ -99,12 +137,13 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
-        dd('destroy method', $category);
+//        dd('destroy method', $category);
         try {
             $category->delete();
         } catch (\Exception $e) {
             return response('Something went wrong');
         }
-        return response('Deleted', 200);
+        return redirect(route('admin.category.index'))
+            ->with(['success' => '"' . $category->title . '" category successfully deleted']);
     }
 }

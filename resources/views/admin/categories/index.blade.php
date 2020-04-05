@@ -18,6 +18,11 @@
                 </tr>
             </thead>
             <tbody>
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
                 @forelse($categories as $category)
                     <tr>
                         <td>{{ $category->title ?? 'none'}}</td>

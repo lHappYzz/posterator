@@ -15,7 +15,7 @@ class CreateChildCategoryTable extends Migration
     {
         Schema::create('child_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->unique();
+            $table->string('title');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')
                 ->references('id')->on('categories')
