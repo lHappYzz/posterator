@@ -41,7 +41,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blog</a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a class="dropdown-item" href="{{ route('admin.category.index') }}">Categories</a></li>
-                            <li><a class="dropdown-item" href="#">Materials</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.post.index') }}">Materials</a></li>
                         </ul>
                     </li>
                 </ul>

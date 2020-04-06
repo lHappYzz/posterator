@@ -32,7 +32,7 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="#" class="btn btn-block btn-outline-primary">Create material</a>
+                <a href="{{ route('admin.post.create') }}" class="btn btn-block btn-outline-primary">Create material</a>
                 <a href="#" class="list-group-item list-group-item-action">
                     <h4 class="list-group-item-heading">First material</h4>
                     <p class="llist-group-item-text">Category</p>

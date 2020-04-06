@@ -27,12 +27,16 @@
                 @forelse($categories as $category)
                     <tr>
                         <td>{{ $category->title ?? 'none'}}</td>
-                        @php $count = $category->child_categories->count() @endphp
-                        <td>{{ $count > 0 ? $count:'none' }}</td>
+                        <td>{{ $category->child_categories->count() }}</td>
                         <td>{{ $category->created_at ?? 'none'}}</td>
                         <td>{{ $category->updated_at ?? 'none' }}</td>
                         <td>
-                            @include('admin.categories.confirmModalWindow', ['category' => $category, 'modalTitle'=>'Delete the category'])
+                            @include('admin.categories.confirmModalWindow', [
+                                'model' => $category,
+                                'modalTitle'=>'Delete the category',
+                                'message' => 'Are you sure you want to delete the category: "' . $category->title . '" with all subcategories?',
+                                'action' => route('admin.category.destroy', ['category' => $category->id])
+                            ])
                             <a class="btn btn-outline-primary" href="{{ route('admin.category.edit', ['category' => $category->id]) }}"><i class="fa fa-edit"></i></a>
                             <button data-toggle="modal" data-target="#ModalCenter{{$category->id}}" type="button" value="delete" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
                         </td>
