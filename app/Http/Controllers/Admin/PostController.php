@@ -4,7 +4,12 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -25,66 +30,99 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
         //
+        return view('admin.posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Redirector
      */
     public function store(Request $request)
     {
         //
+//        dd($request->all(), Auth::id());
+
+        $post =Post::create([
+            'title' => $request->post_title,
+            'published' => false,
+            'text' => $request->post_text,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect(route('admin.post.index'))
+            ->with(['success' => '"' . $post->title . '" post successfully created']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Post  $post
+     * @return View
      */
-    public function show($id)
+    public function show(Post $post)
     {
         //
+//        dd($post);
+        return view('admin.posts.show', ['post' => $post]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Post  $post
+     * @return View
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
         //
+        return view('admin.posts.update', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Post $post
+     * @return Redirector
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
         //
+//        dd('update method', $request->all());
+
+        $post->update([
+            'title' => $request->post_title,
+            'text' => $request->post_text,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect(route('admin.post.index'))
+            ->with(['success' => '"' . $post->title . '" post successfully updated']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Post $post
+     * @return Redirector|RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
         //
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return back('Something went wrong')->withInput();
+        }
+
+        return redirect(route('admin.post.index'))
+            ->with(['success' => '"' . $post->title . '" post successfully deleted']);
     }
 }

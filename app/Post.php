@@ -10,4 +10,8 @@ class Post extends Model
     public $timestamps = true;
     protected $table = 'posts';
     protected $fillable = ['title','published','text','user_id', 'updated_at'];
+
+    public function creator(){
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
 }

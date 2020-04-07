@@ -6,14 +6,17 @@ use App\Category;
 use App\Child_category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -26,7 +29,7 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
@@ -37,8 +40,8 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * param  \Illuminate\Http\Request  $request
-     * return \Illuminate\Http\Response
+     * @param  StoreCategoryRequest  $request
+     * @return Redirector|RedirectResponse
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -59,7 +62,6 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Category  $category
-     * return \Illuminate\Http\Response
      */
     public function show(Category $category)
     {
@@ -71,7 +73,7 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Category  $category
-     * return \Illuminate\Http\Response
+     * @return View
      */
     public function edit(Category $category)
     {
@@ -83,9 +85,9 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreCategoryRequest $request
      * @param  \App\Category  $category
-     * return \Illuminate\Http\Response
+     * @return Redirector|RedirectResponse
      */
     public function update(StoreCategoryRequest $request, Category $category)
     {
@@ -132,7 +134,7 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Category  $category
-     * return \Illuminate\Http\Response
+     * @return Redirector|RedirectResponse
      */
     public function destroy(Category $category)
     {
@@ -141,7 +143,7 @@ class CategoryController extends Controller
         try {
             $category->delete();
         } catch (\Exception $e) {
-            return response('Something went wrong');
+            return back('Something went wrong')->withInput();
         }
         return redirect(route('admin.category.index'))
             ->with(['success' => '"' . $category->title . '" category successfully deleted']);

@@ -28,19 +28,20 @@
             @forelse($posts as $post)
                 <tr>
                     <td>{{ $post->title ?? 'none'}}</td>
-                    <td>{{ $post->published ?? 'none'}}</td>
-                    <td>{{ 'none'}}</td>
+                    <td>{{ $post->published ? 'Published':'Not published'}}</td>
+                    <td>{{ $post->creator->name ?? 'none' }}</td>
                     <td>{{ $post->created_at ?? 'none'}}</td>
                     <td>{{ $post->updated_at ?? 'none' }}</td>
                     <td>
+                        <a class="btn btn-outline-primary" href="{{ route('admin.post.show', ['post' => $post->id]) }}"><i class="fa fa-eye"></i></a>
                         @include('admin.categories.confirmModalWindow', [
                             'model' => $post,
                             'modalTitle'=>'Delete the post',
-                            'message' => 'Are you sure you want to delete the post: "' . $category->title . '" with all data?',
+                            'message' => 'Are you sure you want to delete the post: "' . $post->title . '" with all data?',
                             'action' => route('admin.post.destroy', ['post' => $post->id])
                         ])
-                        <a class="btn btn-outline-primary" href="{{ route('admin.category.edit', ['category' => $category->id]) }}"><i class="fa fa-edit"></i></a>
-                        <button data-toggle="modal" data-target="#ModalCenter{{$category->id}}" type="button" value="delete" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
+                        <a class="btn btn-outline-primary" href="{{ route('admin.post.edit', ['post' => $post->id]) }}"><i class="fa fa-edit"></i></a>
+                        <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
             @empty
