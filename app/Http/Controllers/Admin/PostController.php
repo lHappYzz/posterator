@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Comment;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\User;
@@ -49,7 +50,7 @@ class PostController extends Controller
         //
 //        dd($request->all(), Auth::id());
 
-        $post =Post::create([
+        $post = Post::create([
             'title' => $request->post_title,
             'published' => false,
             'text' => $request->post_text,
@@ -57,7 +58,24 @@ class PostController extends Controller
         ]);
 
         return redirect(route('admin.post.index'))
-            ->with(['success' => '"' . $post->title . '" post successfully created']);
+            ->with(['success' => "'{$post->title}' post successfully created"]);
+    }
+
+    public function storeComment(Request $request){
+        $comment = Comment::create([
+            'comment' => $request->comment_text,
+            'post_id' => $request->postId,
+            'user_id' => Auth::id(),
+            'parent_comment_id' => $request->parent_comment_id ?? null,
+        ]);
+        $result = [
+            'id' => $comment->id,
+            'comment' => $comment->comment,
+            'creator' => $comment->creator->name,
+            'parent_comment_id' => $comment->parent_comment_id ?? null,
+            'created_at' => $comment->created_at->format('M d Y, H:i'),
+        ];
+        echo json_encode($result);
     }
 
     /**
@@ -70,7 +88,8 @@ class PostController extends Controller
     {
         //
 //        dd($post);
-        return view('admin.posts.show', ['post' => $post]);
+        $comments = Comment::all()->where('post_id', $post->id);
+        return view('admin.posts.show', ['post' => $post, 'comments' => $comments]);
     }
 
     /**
@@ -104,7 +123,7 @@ class PostController extends Controller
         ]);
 
         return redirect(route('admin.post.index'))
-            ->with(['success' => '"' . $post->title . '" post successfully updated']);
+            ->with(['success' => "'{$post->title}' post successfully updated"]);
     }
 
     /**
@@ -123,6 +142,6 @@ class PostController extends Controller
         }
 
         return redirect(route('admin.post.index'))
-            ->with(['success' => '"' . $post->title . '" post successfully deleted']);
+            ->with(['success' => "'{$post->title}' post successfully deleted"]);
     }
 }

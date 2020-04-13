@@ -29,7 +29,6 @@
 @endsection
 @push('scripts')
     <script type="text/javascript" src="/public/js/scripts.js?v=26"></script>
-
     <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
 
     <script>

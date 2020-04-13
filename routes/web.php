@@ -19,6 +19,8 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'auth'], fu
     Route::get('/', 'DashboardController@index')->name('admin.index');
     Route::resource('/category', 'CategoryController', ['as'=>'admin']);
     Route::resource('/post', 'PostController', ['as'=>'admin']);
+
+    Route::post('/comment', 'PostController@storeComment')->name('admin.comment.store');
 });
 
 Route::get('/', function () {
