@@ -37,6 +37,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
+                    <li>
+                        <a class="nav-link" href="{{route('admin.index')}}">Dashboard</a>
+                    </li>
                     <li class="dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blog</a>
                         <ul class="dropdown-menu" role="menu">

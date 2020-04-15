@@ -1,25 +1,25 @@
 @extends('admin.layouts.app_admin')
 @section('content')
     <div class="container">
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <p>Categories 0</p>
+                        <h4>Categories: {{$categories->count()}}</h4>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <p>Materials 0</p>
+                        <h4>Materials: {{$posts->count()}}</h4>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <p>Users 0</p>
+                        <h4>Users: {{$users->count()}}</h4>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <p>Today 0</p>
+                        <h4>Today: 0</h4>
                     </div>
                 </div>
             </div>
