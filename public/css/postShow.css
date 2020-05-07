@@ -1,0 +1,44 @@
+
+.creator-name{
+    border-bottom: 2px solid red;
+}
+.font-weight-light > p {
+    font-size: 13px;
+}
+
+
+li {
+    list-style-type: none;
+}
+.limited {
+    padding-left: 0;
+}
+.subcomment-list > li {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    word-break: break-all;
+}
+.comment-action, .comment-creator {
+    font-size: 13px;
+}
+.comment-list {
+    padding-left: 0;
+    font-size: 15px;
+}
+.comment-list > li {
+    padding: 10px;
+    word-break: break-all;
+}
+.comment-list > li:nth-child(2n){
+    background-color: #efefef;
+}
+.text-secondary:hover {
+    cursor: pointer;
+}
+.text-secondary {
+    padding-left: 10px;
+}
+.answer:hover {
+    cursor: pointer;
+}

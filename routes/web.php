@@ -15,16 +15,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
-Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'auth'], function(){
+Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth', 'role:admin']], function(){
     Route::get('/', 'DashboardController@index')->name('admin.index');
     Route::resource('/category', 'CategoryController', ['as'=>'admin']);
     Route::resource('/post', 'PostController', ['as'=>'admin']);
+    Route::resource('/user', 'UserController', ['as'=>'admin']);
 
     Route::post('/comment', 'PostController@storeComment')->name('admin.comment.store');
 });
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['namespace' => 'User'], function (){
+    Route::get('/', 'DashboardController@index')->name('user.index');
+
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

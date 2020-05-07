@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'role_id', 'email', 'password',
     ];
 
     /**
@@ -36,8 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function roles(){
-        return $this->belongsToMany('App\Role', 'user_roles', 'user_id', 'role_id');
+    public function role(){
+        return $this->belongsTo('App\Role', 'role_id', 'id');
+    }
+    public function hasRole($findRole){
+        $userRole = Auth::user()->role;
+        if ($userRole->name == $findRole) return true;
+        return false;
     }
 }

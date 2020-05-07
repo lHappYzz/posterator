@@ -1,51 +1,6 @@
 @extends('admin.layouts.app_admin')
 @push('styles')
-    {{--TODO: Вынести стили в отдельный файл--}}
-    <style>
-        .creator-name{
-            border-bottom: 2px solid red;
-        }
-        .font-weight-light > p {
-            font-size: 13px;
-        }
-
-
-        li {
-            list-style-type: none;
-        }
-        .limited {
-            padding-left: 0;
-        }
-        .subcomment-list > li {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            font-size: 15px;
-            word-break: break-all;
-        }
-        .comment-action, .comment-creator {
-            font-size: 13px;
-        }
-        .comment-list {
-            padding-left: 0;
-            font-size: 15px;
-        }
-        .comment-list > li {
-            padding: 10px;
-            word-break: break-all;
-        }
-        .comment-list > li:nth-child(2n){
-            background-color: #efefef;
-        }
-        .text-secondary:hover {
-            cursor: pointer;
-        }
-        .text-secondary {
-             padding-left: 10px;
-         }
-        .answer:hover {
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="{{asset('public/css/postShow.css')}}">
     @endpush
 @section('content')
     <div class="container">
@@ -59,7 +14,7 @@
         <div class="blog-content">
             <div class="font-weight-bold">
                 <h1>{{ $post->title ?? 'none' }}</h1>
-                <div class="font-weight-light">
+                <div class="creator font-weight-light">
                     <p>Written by <span class="creator-name">{{ $post->creator->name }}</span> {{ $post->updated_at->format('M d Y, H:i') }}</p>
                 </div>
             </div>
@@ -119,7 +74,7 @@
                     @csrf
                     <div class="form-group">
                         <div class="input-group">
-                            <textarea maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>"
+                            <textarea maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
                             <div class="input-group-append">
                                 <button name="newAnswerComment" class="btn btn-outline-primary" type="submit">Create</button>
                             </div>

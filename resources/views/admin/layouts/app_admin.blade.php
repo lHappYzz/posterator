@@ -12,6 +12,10 @@
     <!-- Scripts -->
     {{--    <script src="{{ asset('js/app.js') }}" defer></script>--}}
     <script src="/public/js/app.js" defer></script>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,6 +26,11 @@
     <link href="/public/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     @stack('styles')
+    <style>
+        .input-group-prepend > span{
+            width: 150px;
+        }
+    </style>
 
 </head>
 <body>
@@ -45,6 +54,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a class="dropdown-item" href="{{ route('admin.category.index') }}">Categories</a></li>
                             <li><a class="dropdown-item" href="{{ route('admin.post.index') }}">Materials</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.user.index') }}">Users</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -68,6 +78,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{route('admin.index')}}">Admin panel</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -90,5 +101,12 @@
     </main>
 
 @stack('scripts')
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 </body>
 </html>
