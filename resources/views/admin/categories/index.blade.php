@@ -31,7 +31,7 @@
                         <td>{{ $category->created_at ?? 'none'}}</td>
                         <td>{{ $category->updated_at ?? 'none' }}</td>
                         <td>
-                            @include('admin.categories.confirmModalWindow', [
+                            @include('admin.components.confirmModalWindow', [
                                 'model' => $category,
                                 'modalTitle'=>'Delete the category',
                                 'message' => 'Are you sure you want to delete the category: "' . $category->title . '" with all subcategories?',

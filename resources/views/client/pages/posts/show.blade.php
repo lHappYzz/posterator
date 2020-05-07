@@ -7,7 +7,7 @@
         @component('admin.components.breadcrumb')
             @slot('title') Post review @endslot
             @slot('parent') Main @endslot
-            @slot('middle_pages', ['admin.post.index' => 'Posts'])
+            @slot('middle_pages', ['post.index' => 'Posts'])
             @slot('active') Post review @endslot
         @endcomponent
         <hr>
@@ -25,7 +25,7 @@
                 <hr>
                 <h2>Comments</h2>
                 <div class="make-new-comment">
-                    <form id="commentForm" class="form" action="{{route('admin.comment.store')}}" method="post">
+                    <form id="commentForm" class="form" action="{{route('comment.store')}}" method="post">
                         @csrf
                         <div class="form-group">
                             <div class="input-group">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="comments-list">
                     <ol class="comment-list" id="commentBlock">
-                        @includeWhen($comments->count() > 0, 'admin.posts.comments.comments', ['comments' => $comments])
+                        @includeWhen($comments->count() > 0, 'client.pages.posts.comments.comments', ['comments' => $comments])
                     </ol>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                 }
             });
             let form = `
-                <form id="answerCommentForm" class="form" action="{{route('admin.comment.store')}}" method="post" >
+                <form id="answerCommentForm" class="form" action="{{route('comment.store')}}" method="post" >
                     @csrf
                     <div class="form-group">
                         <div class="input-group">
@@ -133,7 +133,7 @@
                 return;
             }
             let xhr = new XMLHttpRequest();
-            xhr.open('post', '{{route('admin.comment.store')}}');
+            xhr.open('post', '{{route('comment.store')}}');
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200){

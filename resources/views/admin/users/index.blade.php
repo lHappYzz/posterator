@@ -34,7 +34,7 @@
                     <td>{{ $user->created_at ?? 'none'}}</td>
                     <td>
 {{--                        <a class="btn btn-outline-primary" href="{{ route('admin.user.show', ['user' => $user->id]) }}"><i class="fa fa-eye"></i></a>--}}
-                        @include('admin.categories.confirmModalWindow', [
+                        @include('admin.components.confirmModalWindow', [
                             'model' => $user,
                             'modalTitle'=>'Delete the user',
                             'message' => 'Are you sure you want to delete the user: "' . $user->name . '"?',

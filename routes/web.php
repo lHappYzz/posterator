@@ -18,16 +18,13 @@ Auth::routes();
 Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth', 'role:admin']], function(){
     Route::get('/', 'DashboardController@index')->name('admin.index');
     Route::resource('/category', 'CategoryController', ['as'=>'admin']);
-    Route::resource('/post', 'PostController', ['as'=>'admin']);
     Route::resource('/user', 'UserController', ['as'=>'admin']);
-
-    Route::post('/comment', 'PostController@storeComment')->name('admin.comment.store');
 });
 
-Route::group(['namespace' => 'User'], function (){
-    Route::get('/', 'DashboardController@index')->name('user.index');
-
-});
-
+Route::get('/', 'PagesController@mainPage')->name('user.page.main');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/comment', 'PostController@storeComment')->name('comment.store');
+Route::resource('/post', 'PostController');
+
 

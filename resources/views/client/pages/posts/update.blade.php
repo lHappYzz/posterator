@@ -5,11 +5,11 @@
         @component('admin.components.breadcrumb')
             @slot('title') Update post @endslot
             @slot('parent') Main @endslot
-            @slot('middle_pages', ['admin.post.index' => 'Posts'])
+            @slot('middle_pages', ['post.index' => 'Posts'])
             @slot('active') Update post @endslot
         @endcomponent
         <hr>
-        <form class="form" method="post" action="{{ route('admin.post.update', ['post' => $post]) }}">
+        <form class="form" method="post" action="{{ route('post.update', ['post' => $post]) }}">
             @method('put')
             @csrf
             <div class="form-group">

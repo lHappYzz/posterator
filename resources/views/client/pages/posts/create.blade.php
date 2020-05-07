@@ -5,11 +5,11 @@
         @component('admin.components.breadcrumb')
             @slot('title') Create post @endslot
             @slot('parent') Main @endslot
-            @slot('middle_pages', ['admin.post.index' => 'Posts'])
+            @slot('middle_pages', ['post.create' => 'Posts'])
             @slot('active') Create post @endslot
         @endcomponent
         <hr>
-        <form class="form" method="post" action="{{ route('admin.post.store') }}">
+        <form class="form" method="post" action="{{ route('post.store') }}">
             @csrf
             <div class="form-group">
                 <div class="input-group">

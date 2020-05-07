@@ -7,7 +7,7 @@
             @slot('active') Posts @endslot
         @endcomponent
         <hr>
-        <a href="{{ route('admin.post.create') }}" class="btn btn-block btn-outline-primary my-3"><i class="fa fa-plus"></i> Create post</a>
+        <a href="{{ route('post.create') }}" class="btn btn-block btn-outline-primary my-3"><i class="fa fa-plus"></i> Create post</a>
         <table class="table table-hover text-center">
             <thead>
             <tr>
@@ -33,14 +33,14 @@
                     <td>{{ $post->created_at ?? 'none'}}</td>
                     <td>{{ $post->updated_at ?? 'none' }}</td>
                     <td>
-                        <a class="btn btn-outline-primary" href="{{ route('admin.post.show', ['post' => $post->id]) }}"><i class="fa fa-eye"></i></a>
-                        @include('admin.categories.confirmModalWindow', [
+                        <a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->id]) }}"><i class="fa fa-eye"></i></a>
+                        @include('admin.components.confirmModalWindow', [
                             'model' => $post,
                             'modalTitle'=>'Delete the post',
                             'message' => 'Are you sure you want to delete the post: "' . $post->title . '" with all data?',
-                            'action' => route('admin.post.destroy', ['post' => $post->id])
+                            'action' => route('post.destroy', ['post' => $post->id])
                         ])
-                        <a class="btn btn-outline-primary" href="{{ route('admin.post.edit', ['post' => $post->id]) }}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-outline-primary" href="{{ route('post.edit', ['post' => $post->id]) }}"><i class="fa fa-edit"></i></a>
                         <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
