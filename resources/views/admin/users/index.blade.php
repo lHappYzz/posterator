@@ -38,7 +38,7 @@
                             'model' => $user,
                             'modalTitle'=>'Delete the user',
                             'message' => 'Are you sure you want to delete the user: "' . $user->name . '"?',
-                            'action' => /*route('admin.user.destroy', ['post' => $post->id])*/''
+                            'action' => route('admin.user.destroy', ['user' => $user->id])
                         ])
                         <a class="btn btn-outline-primary" href="{{ route('admin.user.edit', ['user' => $user->id]) }}"><i class="fa fa-edit"></i></a>
                         <button data-toggle="modal" data-target="#ModalCenter{{$user->id}}" type="button" value="delete" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>

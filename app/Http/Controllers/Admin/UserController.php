@@ -31,23 +31,36 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
         //
-
+        return view('admin.users.create', [
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         //
+//        dd($request);
+        $role = DB::table('roles')->where('name', $request->role_name)->first();
+        $user = User::create([
+            'name' => $request->user_name,
+            'role_id' => $role->id,
+            'email' => $request->user_email,
+            'password' => Hash::make($request->user_password),
+        ]);
+
+        return redirect(route('admin.user.index'))
+            ->with(['success' => "'{$user->name}' successfully created"]);
     }
 
     /**

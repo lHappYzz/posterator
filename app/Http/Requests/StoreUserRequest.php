@@ -23,9 +23,11 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
-        return [/*
-            "category_title" => "required|min:3|max:30|unique:categories,title",
-            "subcategory_title.*.*" => "distinct|different:category_title|unique:child_categories,title|nullable|min:3|max:30",*/
+        return [
+            "user_name" => ['required', 'string', 'max:255'],
+            "user_email" => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            "role_name" => ['required', 'string', 'max:255', 'unique:roles,name'],
+            "user_password" => ['required', 'string', 'min:8'],
         ];
     }
 }
