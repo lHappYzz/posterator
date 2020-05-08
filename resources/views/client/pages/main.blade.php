@@ -6,9 +6,12 @@
     <div class="container">
         <div class="posts">
             @forelse($posts as $post)
-                <div class="post-{{$post->id}}">
-                    <h1><a href="#">{{ $post->title ?? 'none' }}</a></h1>
-                </div>
+                @if($post->published)
+                    <div class="post-{{$post->id}}">
+{{--                        <h1><a href="{{ url('post/'.$post->slug) }}">{{ $post->title ?? 'none' }}</a></h1>--}}
+                        <h1><a href="{{ action('PostController@show', ['post' => $post->slug]) }}">{{ $post->title ?? 'none' }}</a></h1>
+                    </div>
+                @endif
             @empty
                 <div class="text-center" >
                     <h1>There is nothing yet</h1>

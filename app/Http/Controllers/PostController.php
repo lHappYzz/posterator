@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -56,26 +57,30 @@ class PostController extends Controller
             'text' => $request->post_text,
             'user_id' => Auth::id(),
         ]);
-
+        $post->update([
+            'slug' => Str::slug($request->post_title) . "-" . $post->id,
+        ]);
         return redirect(route('post.index'))
             ->with(['success' => "'{$post->title}' post successfully created"]);
     }
 
     public function storeComment(Request $request){
-        $comment = Comment::create([
-            'comment' => $request->comment_text,
-            'post_id' => $request->postId,
-            'user_id' => Auth::id(),
-            'parent_comment_id' => $request->parent_comment_id ?? null,
-        ]);
-        $result = [
-            'id' => $comment->id,
-            'comment' => $comment->comment,
-            'creator' => $comment->creator->name,
-            'parent_comment_id' => $comment->parent_comment_id ?? null,
-            'created_at' => $comment->created_at->format('M d Y, H:i'),
-        ];
-        echo json_encode($result);
+        if (Auth()->user()){
+            $comment = Comment::create([
+                'comment' => $request->comment_text,
+                'post_id' => $request->postId,
+                'user_id' => Auth::id(),
+                'parent_comment_id' => $request->parent_comment_id ?? null,
+            ]);
+            $result = [
+                'id' => $comment->id,
+                'comment' => $comment->comment,
+                'creator' => $comment->creator->name,
+                'parent_comment_id' => $comment->parent_comment_id ?? null,
+                'created_at' => $comment->created_at->format('M d Y, H:i'),
+            ];
+            echo json_encode($result);
+        }
     }
 
     /**

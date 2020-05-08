@@ -5,7 +5,7 @@
         @component('admin.components.breadcrumb')
             @slot('title') Create post @endslot
             @slot('parent') Main @endslot
-            @slot('middle_pages', ['post.create' => 'Posts'])
+            @slot('middle_pages', ['post.index' => 'Posts'])
             @slot('active') Create post @endslot
         @endcomponent
         <hr>
@@ -16,7 +16,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Post title</span>
                     </div>
-                    <input type="text" class="form-control" name="post_title" maxlength="30" value="{{ old('post_title') }}" placeholder="Some title for the post">
+                    <input type="text" class="form-control" name="post_title" maxlength="200" value="{{ old('post_title') }}" placeholder="Some title for the post">
                 </div>
                 <div class="input-group d-inline">
                     <textarea name="post_text" id="editor"></textarea>

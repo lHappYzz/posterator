@@ -23,8 +23,8 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth', 'r
 
 Route::get('/', 'PagesController@mainPage')->name('user.page.main');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/post', 'PostController');
 
 Route::post('/comment', 'PostController@storeComment')->name('comment.store');
-Route::resource('/post', 'PostController');
 
 

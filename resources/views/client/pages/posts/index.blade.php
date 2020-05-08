@@ -33,14 +33,15 @@
                     <td>{{ $post->created_at ?? 'none'}}</td>
                     <td>{{ $post->updated_at ?? 'none' }}</td>
                     <td>
-                        <a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->id]) }}"><i class="fa fa-eye"></i></a>
+{{--                        <a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>--}}
+                        <a class="btn btn-outline-primary" href="{{ action('PostController@show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>
                         @include('admin.components.confirmModalWindow', [
                             'model' => $post,
                             'modalTitle'=>'Delete the post',
                             'message' => 'Are you sure you want to delete the post: "' . $post->title . '" with all data?',
-                            'action' => route('post.destroy', ['post' => $post->id])
+                            'action' => route('post.destroy', ['post' => $post->slug])
                         ])
-                        <a class="btn btn-outline-primary" href="{{ route('post.edit', ['post' => $post->id]) }}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-outline-primary" href="{{ route('post.edit', ['post' => $post->slug]) }}"><i class="fa fa-edit"></i></a>
                         <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>

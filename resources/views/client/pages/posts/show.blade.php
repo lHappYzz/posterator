@@ -1,16 +1,23 @@
-@extends('admin.layouts.app_admin')
+@extends('layouts.app')
 @push('styles')
     <link rel="stylesheet" href="{{asset('public/css/postShow.css')}}">
     @endpush
 @section('content')
     <div class="container">
-        @component('admin.components.breadcrumb')
-            @slot('title') Post review @endslot
-            @slot('parent') Main @endslot
-            @slot('middle_pages', ['post.index' => 'Posts'])
-            @slot('active') Post review @endslot
-        @endcomponent
-        <hr>
+
+        @auth
+            @if(Auth()->user()->hasRole('admin'))
+                @component('admin.components.breadcrumb')
+                    @slot('title') Post review @endslot
+                    @slot('parent') Main @endslot
+                    @slot('middle_pages', ['post.index' => 'Posts'])
+                    @slot('active') Post review @endslot
+                @endcomponent
+                <hr>
+            @endif
+        @endauth
+
+
         <div class="blog-content">
             <div class="font-weight-bold">
                 <h1>{{ $post->title ?? 'none' }}</h1>
@@ -24,22 +31,24 @@
             <div class="comments-block">
                 <hr>
                 <h2>Comments</h2>
-                <div class="make-new-comment">
-                    <form id="commentForm" class="form" action="{{route('comment.store')}}" method="post">
-                        @csrf
-                        <div class="form-group">
-                            <div class="input-group">
-                                <textarea maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-primary" name="newComment" type="submit">Create</button>
+                @auth
+                    <div class="make-new-comment">
+                        <form id="commentForm" class="form" action="{{route('comment.store')}}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <textarea maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" name="newComment" type="submit">Create</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" value="{{$post->id}}" name="postId" hidden>
-                        </div>
-                    </form>
-                </div>
+                            <div class="form-group">
+                                <input type="text" value="{{$post->id}}" name="postId" hidden>
+                            </div>
+                        </form>
+                    </div>
+                @endauth
                 <div class="comments-list">
                     <ol class="comment-list" id="commentBlock">
                         @includeWhen($comments->count() > 0, 'client.pages.posts.comments.comments', ['comments' => $comments])
@@ -49,7 +58,7 @@
         </div>
     </div>
 @endsection
-{{--TODO: Вынести этот мусор в отдельный файл. На момент последнего тестирования все работало--}}
+{{--TODO: Вынести этот мусор в отдельный файл--}}
 @push('scripts')
     <script type="text/javascript">
         function showAnswers(spanElement, commentId) {
