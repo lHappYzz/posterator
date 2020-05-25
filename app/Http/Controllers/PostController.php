@@ -16,6 +16,13 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+//        $this->middleware('auth')->except(['show', 'index']);
+        $this->authorizeResource(Post::class, 'post', ['except' => ['show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -102,7 +109,7 @@ class PostController extends Controller
      * @param  Post  $post
      * @return View
      */
-    public function edit(Post $post)
+    public function edit(Post $post, User $user)
     {
         //
         return view('client.pages.posts.update', ['post' => $post]);
