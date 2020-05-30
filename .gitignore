@@ -1,5 +1,6 @@
 /node_modules
 /public/hot
+/public/ckeditor/uploads/
 /public/storage
 /storage/*.key
 /vendor

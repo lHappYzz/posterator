@@ -30,11 +30,16 @@
 @push('scripts')
     <script type="text/javascript" src="/public/js/scripts.js?v=26"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
-
     <script>
+
         ClassicEditor
             .create( document.querySelector( '#editor' ), {
-
+                ckfinder: {
+                    options: {
+                        resourceType: 'Images'
+                    },
+                    uploadUrl: '{{route('image.upload', ['_token' => csrf_token() ])}}'
+                }
             })
             .then( editor => {
                 console.log( editor );

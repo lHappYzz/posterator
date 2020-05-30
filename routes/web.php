@@ -25,8 +25,8 @@ Route::get('/', 'PagesController@mainPage')->name('user.page.main');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/post', 'PostController');
-
-
 Route::post('/comment', 'PostController@storeComment')->name('comment.store');
+
+Route::post('/uploads', 'CKEditorController@uploadImg')->name('image.upload');
 
 
