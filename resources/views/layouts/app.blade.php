@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
 {{--    <script src="{{ asset('js/app.js') }}" defer></script>--}}
-    <script src="/public/js/app.js" defer></script>
+    <script src={{asset("public/js/app.js") . "?v=" . filemtime(public_path() . "/js/app.js") }}></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,11 +19,11 @@
 
     <!-- Styles -->
 {{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-    <link href="{{asset('public/css/app.css')}}" rel="stylesheet">
+    <link href="{{asset('public/css/app.css') . "?v=" . filemtime(public_path() . "/css/app.css") }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
-    <div id="app">
+    <div class="wrapper">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -77,10 +77,7 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+        @yield('content')
     </div>
 @stack('scripts')
 </body>
