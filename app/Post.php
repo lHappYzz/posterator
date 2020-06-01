@@ -19,8 +19,14 @@ class Post extends Model
         return $this->hasMany('App\Comment', 'post_id', 'id');
     }
 
-    public function getRouteKeyName()
-    {
+    public function getRouteKeyName(){
         return 'slug';
+    }
+
+    public function shortDesc(){
+        $text = strip_tags($this->text);
+        $text = trim(substr($text, 0, 255));
+        $text .= '...';
+        return $text;
     }
 }

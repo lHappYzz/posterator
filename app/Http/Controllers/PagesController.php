@@ -11,7 +11,7 @@ class PagesController extends Controller
     //
     public function mainPage(){
         return view('client.pages.main', [
-            'posts' => Post::all(),
+            'posts' => Post::where('published', true)->paginate(10),
         ]);
     }
 }

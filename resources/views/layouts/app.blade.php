@@ -11,15 +11,15 @@
 
     <!-- Scripts -->
 {{--    <script src="{{ asset('js/app.js') }}" defer></script>--}}
-    <script src="/public/js/app.js" defer></script>
-
+    <script src={{asset("public/js/app.js") . "?v=" . filemtime(public_path() . "/js/app.js") }}></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Styles -->
 {{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-    <link href="{{asset('public/css/app.css')}}" rel="stylesheet">
+    <link href="{{asset('public/css/app.css') . "?v=" . filemtime(public_path() . "/css/app.css") }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
