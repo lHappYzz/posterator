@@ -22,11 +22,11 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth', 'r
 });
 
 Route::get('/', 'PagesController@mainPage')->name('user.page.main');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile', 'PagesController@profile')->middleware('auth')->name('user.page.profile');
+Route::get('/profile/posts', 'PagesController@userPosts')->middleware('auth')->name('user.page.profile.posts');
 
 Route::resource('/post', 'PostController');
 Route::post('/comment', 'PostController@storeComment')->name('comment.store');
-
 Route::post('/uploads', 'CKEditorController@uploadImg')->name('image.upload');
 
 

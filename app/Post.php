@@ -23,9 +23,9 @@ class Post extends Model
         return 'slug';
     }
 
-    public function shortDesc(){
+    public function shortDesc($length = null){
         $text = strip_tags($this->text);
-        $text = trim(substr($text, 0, 255));
+        $text = trim(substr($text, 0, $length ?? 255));
         $text .= '...';
         return $text;
     }

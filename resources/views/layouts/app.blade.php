@@ -24,7 +24,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mb-4">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -58,6 +58,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('user.page.profile') }}">Profile</a>
                                     @if(Auth::user()->hasRole('admin'))
                                         <a class="dropdown-item" href="{{route('admin.index')}}">Admin panel</a>
                                     @endif
