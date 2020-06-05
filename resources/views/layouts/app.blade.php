@@ -59,6 +59,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('user.page.profile') }}">Profile</a>
+                                    <a class="dropdown-item" href="{{ route('user.page.profile.posts') }}">My posts</a>
                                     @if(Auth::user()->hasRole('admin'))
                                         <a class="dropdown-item" href="{{route('admin.index')}}">Admin panel</a>
                                     @endif
