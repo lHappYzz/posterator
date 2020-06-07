@@ -12,7 +12,7 @@ class PagesController extends Controller
     //
     public function mainPage(){
         return view('client.pages.main', [
-            'posts' => Post::where('published', true)->paginate(10),
+            'posts' => Post::where('published', true)->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
     public function profile(){
