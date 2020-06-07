@@ -26,6 +26,7 @@ Route::get('/profile', 'PagesController@profile')->middleware('auth')->name('use
 Route::get('/profile/posts', 'PagesController@userPosts')->middleware('auth')->name('user.page.profile.posts');
 
 Route::resource('/post', 'PostController');
+Route::post('/post/publish', 'PostController@publish')->name('post.publish');
 Route::post('/comment', 'PostController@storeComment')->name('comment.store');
 Route::post('/uploads', 'CKEditorController@uploadImg')->name('image.upload');
 
