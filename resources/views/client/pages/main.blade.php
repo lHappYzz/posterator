@@ -11,7 +11,6 @@
         }
         .post {
             padding-bottom: 10px;
-            padding-top: 10px;
         }
     </style>
 @endpush
