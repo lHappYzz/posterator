@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -137,6 +138,31 @@ class PostController extends Controller
             ->with(['success' => "'{$post->title}' post successfully updated"]);
     }
 
+    /**
+     * Publish the specified resource.
+     *
+     * @param  Post $post
+     * @return Redirector|RedirectResponse
+     */
+    public function publish(Request $request){
+        $status = '';
+        if ($request['status'] == 'published'){
+            DB::table('posts')
+                ->where('id', $request['id'])
+                ->update(['published' => false]);
+            $status = 'not published';
+        } else if($request['status'] == 'not published'){
+            DB::table('posts')
+                ->where('id', $request['id'])
+                ->update(['published' => true]);
+            $status = 'published';
+        }
+        $result = [
+            'status' => $status,
+        ];
+
+        return json_encode($result);
+    }
     /**
      * Remove the specified resource from storage.
      *

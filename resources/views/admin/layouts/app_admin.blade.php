@@ -34,7 +34,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
@@ -45,19 +45,21 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
-                    <li>
-                        <a class="nav-link" href="{{route('admin.index')}}">Dashboard</a>
-                    </li>
-                    <li class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blog</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.category.index') }}">Categories</a></li>
-                            <li><a class="dropdown-item" href="{{ route('post.index') }}">Materials</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.user.index') }}">Users</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                @if(Auth::user()->hasRole('admin'))
+                    <ul class="navbar-nav mr-auto">
+                        <li>
+                            <a class="nav-link" href="{{route('admin.index')}}">Dashboard</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blog</a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.category.index') }}">Categories</a></li>
+                                <li><a class="dropdown-item" href="{{ route('post.index') }}">Materials</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.user.index') }}">Users</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                @endif
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -78,6 +80,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('user.page.profile') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ route('user.page.profile.posts') }}">My posts</a>
                                 @if(Auth::user()->hasRole('admin'))
                                     <a class="dropdown-item" href="{{route('admin.index')}}">Admin panel</a>
                                 @endif
@@ -97,11 +101,9 @@
             </div>
         </div>
     </nav>
-
     <main class="py-4">
         @yield('content')
     </main>
-
 @stack('scripts')
     <script type="text/javascript">
         $.ajaxSetup({

@@ -45,4 +45,7 @@ class User extends Authenticatable
         if ($userRole->name == $findRole) return true;
         return false;
     }
+    public function posts(){
+        return $this->hasMany('App\Post', 'user_id', 'id');
+    }
 }
