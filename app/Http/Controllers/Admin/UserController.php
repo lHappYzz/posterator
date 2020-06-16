@@ -131,7 +131,7 @@ class UserController extends Controller
             return back('Something went wrong')->withInput();
         }
 
-        return redirect(route('admin.post.index'))
+        return redirect(route('admin.user.index'))
             ->with(['success' => "'{$user->name}' successfully deleted"]);
     }
 }

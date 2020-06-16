@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +22,4 @@ class PagesController extends Controller
             'lastPost' => Auth::user()->posts->last(),
         ]);
     }
-    public function userPosts(){
-        return view('client.pages.profile.posts', [
-            'posts' => Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5),
-        ]);
-    }
-
 }

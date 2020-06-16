@@ -22,8 +22,13 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth', 'r
 });
 
 Route::get('/', 'PagesController@mainPage')->name('user.page.main');
-Route::get('/profile', 'PagesController@profile')->middleware('auth')->name('user.page.profile');
-Route::get('/profile/posts', 'PagesController@userPosts')->middleware('auth')->name('user.page.profile.posts');
+
+Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function (){
+    Route::get('/', 'PagesController@profile')->name('user.page.profile');
+    Route::get('/posts', 'ProfileController@userPosts')->name('user.page.profile.posts');
+    Route::get('/edit', 'ProfileController@profileEdit')->name('user.page.profile.edit');
+    Route::put('/update/{user}', 'ProfileController@update')->name('user.page.profile.update');
+});
 
 Route::resource('/post', 'PostController');
 Route::post('/post/publish', 'PostController@publish')->name('post.publish');

@@ -23,6 +23,11 @@
                         <div class="input-group-append">
                             <button class="btn btn-outline-primary" type="submit">Update</button>
                         </div>
+                        @error('user_name')
+                            <span class="invalid-feedback" style="display: block">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-group">
@@ -32,6 +37,11 @@
                                 <span class="input-group-text">User email</span>
                             </div>
                             <input type="text" class="form-control" name="user_email" maxlength="30" value="{{$user->email}}" placeholder="Some email">
+                            @error('user_email')
+                                <span class="invalid-feedback" style="display: block">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -46,7 +56,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Role</span>
@@ -59,8 +68,12 @@
                                 @endif
                             @endforeach
                         </select>
+                        @error('role_name')
+                            <span class="invalid-feedback" style="display: block">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
-
                 </div>
                 <div class="form-group">
                     <div class="input-group">
@@ -69,6 +82,11 @@
                                 <span class="input-group-text">New password</span>
                             </div>
                             <input placeholder="Some password" type="password" class="form-control" name="user_password" maxlength="30" value="">
+                            @error('user_password')
+                                <span class="invalid-feedback" style="display: block">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                 </div>
