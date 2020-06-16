@@ -21,6 +21,11 @@
 {{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
     <link href="{{asset('public/css/app.css') . "?v=" . filemtime(public_path() . "/css/app.css") }}" rel="stylesheet">
     @stack('styles')
+    <style>
+        .input-group-prepend > span{
+            width: 150px;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
