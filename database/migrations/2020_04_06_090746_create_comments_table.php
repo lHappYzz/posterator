@@ -20,7 +20,7 @@ class CreateCommentsTable extends Migration
             $table->bigInteger('user_id')->nullable()->unsigned();
             $table->foreign('user_id')
                 ->references('id')->on('users')
-                ->onDelete('set null');
+                ->onDelete('cascade');
             $table->foreign('post_id')
                 ->references('id')->on('posts')
                 ->onDelete('cascade');
