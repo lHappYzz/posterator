@@ -27,6 +27,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     @stack('styles')
     <style>
+        img {
+            max-width: 100%;
+        }
         .input-group-prepend > span{
             width: 150px;
         }

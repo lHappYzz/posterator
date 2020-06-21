@@ -22,6 +22,9 @@
     <link href="{{asset('public/css/app.css') . "?v=" . filemtime(public_path() . "/css/app.css") }}" rel="stylesheet">
     @stack('styles')
     <style>
+        img {
+            max-width: 100%;
+        }
         .input-group-prepend > span{
             width: 150px;
         }
