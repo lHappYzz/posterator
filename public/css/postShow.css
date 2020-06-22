@@ -13,12 +13,7 @@ li {
 .limited {
     padding-left: 0;
 }
-.subcomment-list > li {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 15px;
-    word-break: break-all;
-}
+
 .comment-action, .comment-creator {
     font-size: 13px;
 }
@@ -26,13 +21,15 @@ li {
     padding-left: 0;
     font-size: 15px;
 }
-.comment-list > li {
+.comment-item {
     padding: 10px;
     word-break: break-all;
 }
-.comment-list > li:nth-child(2n){
-    background-color: #e1e1e1;
+.reply-comment-item {
+    padding: 5px;
+    word-break: break-all;
 }
+
 .text-secondary:hover {
     cursor: pointer;
 }
@@ -41,4 +38,18 @@ li {
 }
 .answer:hover {
     cursor: pointer;
+}
+.replies-list {
+    margin-bottom: 0;
+}
+
+.animate {
+    animation-name: yellowFlash;
+    animation-duration: 1s;
+    animation-play-state: revert;
+}
+
+@keyframes yellowFlash {
+    from {background-color: #d0a21b;}
+    to {background-color: #f8fafc;}
 }

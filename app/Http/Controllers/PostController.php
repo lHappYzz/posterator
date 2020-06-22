@@ -87,7 +87,12 @@ class PostController extends Controller
                 'parent_comment_id' => $comment->parent_comment_id ?? null,
                 'created_at' => $comment->created_at->format('M d Y, H:i'),
             ];
-            echo json_encode($result);
+            return json_encode($result);
+        } else {
+            $result = [
+                'error' => 'Log in to comment'
+            ];
+            return json_encode($result);
         }
     }
 
@@ -100,7 +105,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
-        $comments = Comment::all()->where('post_id', $post->id);
+        $comments = Comment::all()->where('post_id', $post->id)->where('parent_comment_id', null);
         return view('client.pages.posts.show', ['post' => $post, 'comments' => $comments]);
     }
 

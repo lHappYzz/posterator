@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @push('styles')
     <link rel="stylesheet" href="{{asset('public/css/postShow.css')}}">
-    @endpush
+    <style>
+    </style>
+@endpush
 @section('content')
     <div class="container">
 
@@ -37,7 +39,7 @@
                             @csrf
                             <div class="form-group">
                                 <div class="input-group">
-                                    <textarea maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
+                                    <textarea required maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-primary" name="newComment" type="submit">Create</button>
                                     </div>
@@ -49,10 +51,8 @@
                         </form>
                     </div>
                 @endauth
-                <div class="comments-list">
-                    <ol class="comment-list" id="commentBlock">
-                        @includeWhen($comments->count() > 0, 'client.pages.posts.comments.comments', ['comments' => $comments])
-                    </ol>
+                <div class="comments-list" id="comment-list">
+                    @includeWhen($comments->count() > 0, 'client.pages.posts.comments.comments', ['comments' => $comments])
                 </div>
             </div>
         </div>
@@ -62,14 +62,35 @@
 @push('scripts')
     <script type="text/javascript">
         function showAnswers(spanElement, commentId) {
-            let commentAnswers = document.getElementById('commentAnswers'+commentId);
-            if (commentAnswers.style.display === 'none'){
-                spanElement.innerText = "Close answers";
-                commentAnswers.style.display = 'block';
+            let commentReplies = document.getElementById('replies-'+commentId);
+            if(commentReplies){
+                if (commentReplies.style.display === 'none'){
+                    spanElement.innerText = "Close answers";
+                    commentReplies.style.display = 'block';
+                } else {
+                    spanElement.innerText = 'Show answers';
+                    commentReplies.style.display = 'none';
+                }
             } else {
-                spanElement.innerText = 'Show answers';
-                commentAnswers.style.display = 'none';
+                console.log('Can not find element');
             }
+        }
+        function animationFindParentComment(linkElement, e) {
+            e.preventDefault();
+            let parentCommentId = linkElement.getAttribute('href');
+
+            $(parentCommentId).removeClass('animate');
+
+            setTimeout(function(){
+                $(parentCommentId).addClass("animate");
+            },10); //wait some ms to restart anim
+
+            $('html, body').animate({scrollTop: $(parentCommentId).offset().top}, 200, function () {
+                setTimeout(function(){
+                    $(parentCommentId).removeClass("animate");
+                },1000);
+            });
+            return false;
         }
         function showCommentForm(commentId){
             let forms = document.forms;
@@ -83,9 +104,9 @@
                     @csrf
                     <div class="form-group">
                         <div class="input-group">
-                            <textarea maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
+                            <textarea required maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
                             <div class="input-group-append">
-                                <button name="newAnswerComment" class="btn btn-outline-primary" type="submit">Create</button>
+                                <button name="newComment" class="btn btn-outline-primary" type="submit">Create</button>
                             </div>
                         </div>
                     </div>
@@ -95,49 +116,123 @@
                     </div>
                 </form>
             `;
-            let comment = document.getElementById("commentAnswers"+ commentId);
-            comment.insertAdjacentHTML('beforebegin', form);
+            let repliesToComment = document.getElementById("replies-"+ commentId);
+            if (!repliesToComment) {
+                let comment = document.getElementById("comment-"+ commentId);
+                comment.insertAdjacentHTML('beforeEnd', form);
+                return;
+            }
+            repliesToComment.insertAdjacentHTML('beforebegin', form);
         }
-        function pasteComment(result){
-            let created_at = result.created_at;
-            let comment = `
-                <li class="comment-tree-item">
-                    <div class="comment-item">
+
+        function findRepliesList(childCommentId) {
+            let childComment = document.getElementById('comment-'+childCommentId);
+            let repliesList = childComment.parentElement;
+
+            if (repliesList.className === 'replies-list'){
+                return repliesList;
+            }
+            repliesList = document.getElementById('replies-list-'+childCommentId);
+            return repliesList;
+        }
+        function checkRepliesListDisplayAttr(commentId) {
+            let comment = document.getElementById('comment-'+commentId);
+            let basicCommentId = comment.getAttribute('data-basic-comment-id');
+
+            if (!basicCommentId){
+                let commentSibling = comment.previousElementSibling;
+                while (!basicCommentId) {
+                    if (!commentSibling) {
+                        basicCommentId = comment.getAttribute('data-parent-id');
+                        let basicRepliesList = document.getElementById('replies-'+basicCommentId);
+                        let basicCommentAction = document.getElementById('comment-action-'+basicCommentId);
+                        let showMoreAnswerButton = `
+                            <span class="text-secondary" onclick="showAnswers(this, ${basicCommentId})" id="showMoreAnswer-${basicCommentId}">Close answers</span>
+                        `;
+                        basicCommentAction.insertAdjacentHTML('beforeEnd', showMoreAnswerButton);
+                        basicRepliesList.style.display = 'block';
+                        return;
+                    }
+                    commentSibling = commentSibling.previousElementSibling;
+                    if(!commentSibling){
+                        return false;
+                    }
+                    basicCommentId = commentSibling.getAttribute('data-parent-id');
+                }
+            }
+            let basicCommentRepliesList = document.getElementById('replies-'+basicCommentId);
+
+            if (!basicCommentRepliesList) return false;
+
+            basicCommentRepliesList.style.display = 'block';
+            let showMoreAnswerButton = document.getElementById('showMoreAnswer-'+basicCommentId);
+            showMoreAnswerButton.innerHTML = 'Close answers';
+        }
+        function pasteComment(result) {
+            let createdAt = result.created_at;
+            if(result.parent_comment_id) {
+                let parentCommentCreator = document.getElementById('comment-'+result.parent_comment_id).getAttribute('data-creator');
+                let commentHtml = `
+                    <li class="reply-comment-item" id="comment-${result.id}" data-creator="${result.creator}" data-parent-id="${result.parent_comment_id}">
                         <div class="comment-creator">
-                            <b>${result.creator}</b>, ${created_at}
+                            <b>${result.creator}</b>, ${createdAt}
                         </div>
                         <div class="comment-text">
+                            <a href="#comment-${result.parent_comment_id}" onclick="animationFindParentComment(this, event)" class="answerTo badge badge-info">
+                                @${parentCommentCreator}
+                            </a>
                             ${result.comment}
                         </div>
                         <div class="comment-action">
                             <span onclick="showCommentForm(${result.id})" id="answer" class="answer text-info">Reply</span>
-                            <span class="text-secondary" onclick="showAnswers(this, ${result.id})" id="showMoreAnswer">Close answers</span>
                         </div>
-                        <div class="comment-answers" id="commentAnswers${result.id}" style="display: block">
-                            <ol class="subcomment-list" id="subcomment-list-${result.id}"></ol>
+                    </li>
+                `;
+                let repliesList = findRepliesList(result.parent_comment_id);
+                repliesList.insertAdjacentHTML('beforeEnd', commentHtml);
+                checkRepliesListDisplayAttr(result.id);
+                return;
+            }
+            let commentList = document.getElementById('comment-list');
+
+            let commentHtml = `
+                <div class="comment-block">
+                    <div class="comment-item" id="comment-${result.id}" data-creator="${result.creator}">
+                        <div class="comment-creator">
+                            <b>${result.creator}</b>, ${createdAt}
+                        </div>
+                        <div class="comment-text">
+                            ${result.comment}
+                        </div>
+                        <div class="comment-action" id="comment-action-${result.id}">
+                            <span onclick="showCommentForm(${result.id})" id="answer" class="answer text-info">Reply</span>
                         </div>
                     </div>
-                </li>
+                    <div class="replies" id="replies-${result.id}" data-basic-comment-id="${result.id}" style="display: none">
+                        <ol class="replies-list" id="replies-list-${result.id}"></ol>
+                    </div>
+                </div>
             `;
-            if(result.parent_comment_id){
-                let commentAnswersBlock = document.getElementById('commentAnswers'+result.parent_comment_id);
-                let subcommentsList = document.getElementById('subcomment-list-'+result.parent_comment_id);
-                subcommentsList.insertAdjacentHTML('beforeEnd', comment);
-                commentAnswersBlock.style.display = 'block';
-                answerCommentForm.remove();
-            } else {
-                let commentBlock = document.getElementById('commentBlock');
-                commentBlock.insertAdjacentHTML('beforeEnd', comment);
-            }
+            commentList.insertAdjacentHTML('beforeEnd', commentHtml);
         }
         document.onsubmit = function (e) {
             e.preventDefault();
+
+            let buttonFormElement = e.target.elements.namedItem('newComment');
+
+            buttonFormElement.disabled = true;
+            buttonFormElement.innerHTML = `
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+            `;
+
             let formData = new FormData;
             if (e.target.id === 'commentForm'){
                 formData = new FormData(commentForm);
                 commentForm.elements.namedItem('comment_text').value = '';
             } else if(e.target.id === 'answerCommentForm'){
                 formData = new FormData(answerCommentForm);
+                answerCommentForm.elements.namedItem('comment_text').value = '';
             } else {
                 return;
             }
@@ -146,14 +241,27 @@
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200){
+
+                    buttonFormElement.disabled = false;
+                    buttonFormElement.innerHTML = 'Create';
+
+                    if (typeof answerCommentForm !== 'undefined') {
+                        answerCommentForm.remove();
+                    }
+
                     let result = JSON.parse(xhr.responseText);
                     if (result){
+                        if (result.error) {
+                            console.log(result.error);
+                            return false;
+                        }
                         pasteComment(result);
                     }
                 }
+                buttonFormElement.disabled = false;
+                buttonFormElement.innerHTML = 'Create';
             };
             xhr.send(formData);
-        }
-
+        };
     </script>
 @endpush

@@ -2,30 +2,25 @@
     $subcomments = $parent_comment->child_comments ?? false;
 @endphp
 @if($subcomments)
-    @php $counter++ @endphp
-    <ol class="subcomment-list" id="subcomment-list-{{$parent_comment->id}}@if($counter > 3) limited @endif">
     @foreach($subcomments as $comment)
-        <li class="comment-tree-item">
-            <div class="comment-item">
-                <div class="comment-creator">
-                    <b>{{$comment->creator->name}}</b>, {{$comment->created_at->format('M d Y, H:i')}}
-                </div>
-                <div class="comment-text">
-                    {!! $comment->comment !!} {{--comment text--}}
-                </div>
-                <div class="comment-action">
-                    <span onclick="showCommentForm({{$comment->id}})" id="answer" class="answer text-info">Reply</span>
-                    @if($comment->child_comments->count() > 0)
-                        <span class="text-secondary" onclick="showAnswers(this, {{$comment->id}})" id="showMoreAnswer">Show answers</span>
-                    @endif
-                </div>
-                <div class="comment-answers" id="commentAnswers{{$comment->id}}" style="display: none">
-                    @include('client.pages.posts.comments.subcomments', [
-                            'parent_comment' => $comment,
-                        ])
-                </div>
+        <li class="reply-comment-item" id="comment-{{$comment->id}}" data-basic-comment-id="{{$basic_comment_id}}" data-creator="{{$comment->creator->name}}" data-parent-id="{{$parent_comment->id}}">
+            <div class="comment-creator">
+                <b>{{$comment->creator->name}}</b>, {{$comment->created_at->format('M d Y, H:i')}}
             </div>
+            <div class="comment-text">
+                <a href="#comment-{{$parent_comment->id}}" onclick="animationFindParentComment(this, event)" class="badge badge-info">
+                    {{ '@' . $parent_comment->creator->name}}
+                </a>
+                {!! $comment->comment !!} {{--comment text--}}
+            </div>
+            <div class="comment-action">
+                <span onclick="showCommentForm({{$comment->id}})" id="answer" class="answer text-info">Reply</span>
+            </div>
+
         </li>
+        @include('client.pages.posts.comments.subcomments', [
+                    'parent_comment' => $comment,
+                    'basic_comment_id' => $basic_comment_id,
+                ])
     @endforeach
-    </ol>
 @endif
