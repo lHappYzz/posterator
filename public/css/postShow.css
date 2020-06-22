@@ -1,11 +1,9 @@
-
 .creator-name{
     border-bottom: 2px solid red;
 }
 .font-weight-light > p {
     font-size: 13px;
 }
-
 
 li {
     list-style-type: none;
