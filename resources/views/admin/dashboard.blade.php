@@ -4,22 +4,27 @@
             <div class="row text-center">
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <h4>Categories: {{$categories->count()}}</h4>
+                        <h4>Total (all time): {{$totalPosts}}</h4>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <h4>Materials: {{$posts->count()}}</h4>
+                        <h4>Today you have: {{$todayPosts}}</h4>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <h4>Users: {{$users->count()}}</h4>
+                        <h4>Compared with same day on last week, you have: {{$compareWithLastWeekDay}}</h4>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="jumbotron">
-                        <h4>Today: 0</h4>
+                        <h4>On this week you have: {{$weekPosts}}</h4>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="jumbotron">
+                        <h4>Compared with last week, you have: {{$compareWithLastWeek}}</h4>
                     </div>
                 </div>
             </div>
