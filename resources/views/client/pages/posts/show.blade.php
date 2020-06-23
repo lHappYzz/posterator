@@ -83,13 +83,13 @@
 
             setTimeout(function(){
                 $(parentCommentId).addClass("animate");
+                $(parentCommentId).on('webkitAnimationEnd', function () {
+                    $(this).removeClass('animate');
+                });
             },10); //wait some ms to restart anim
 
-            $('html, body').animate({scrollTop: $(parentCommentId).offset().top}, 200, function () {
-                setTimeout(function(){
-                    $(parentCommentId).removeClass("animate");
-                },1000);
-            });
+
+            $('html, body').animate({scrollTop: $(parentCommentId).offset().top}, 200);
             return false;
         }
         function showCommentForm(commentId){
