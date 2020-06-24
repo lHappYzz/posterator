@@ -1,52 +1,84 @@
 @extends('admin.layouts.app_admin')
+@push('styles')
+    <style>
+        button.list-group-item{
+            border-radius: 0;
+        }
+        .btn:focus, .btn:active {
+             box-shadow: none !important;
+         }
+    </style>
+@endpush
 @section('content')
     <div class="container">
-            <div class="row text-center">
-                <div class="col-sm-3">
-                    <div class="jumbotron">
-                        <h4>Total (all time): {{$posts->count()}}</h4>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="jumbotron">
-                        <h4>Today you have: {{$todayPosts->count()}}</h4>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="jumbotron">
-                        <h4>Compared with same day on last week, you have: {{$compareWithLastWeekDay}}</h4>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="jumbotron">
-                        <h4>On this week you have: {{$weekPosts->count()}}</h4>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="jumbotron">
-                        <h4>Compared with last week, you have: {{$compareWithLastWeek}}</h4>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="jumbotron">
-                        <h4>Last three posts: {{$lastThreePosts}}</h4>
-                    </div>
-                </div>
-            </div>
+        <div class="statistics jumbotron border border-info">
+            <table class="table table-hover">
+                <thead class="text-center">
+                    <tr>
+                        <th colspan="2">Statistics</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Total:</td>
+                    <td>{{$posts->count()}}</td>
+                </tr>
+                <tr>
+                    <td>Today:</td>
+                    <td>{{$todayPosts->count()}}</td>
+                </tr>
+                <tr>
+                    <td>Compared with same day on last week:</td>
+                    <td>{{$compareWithLastWeekDay}}</td>
+                </tr>
+                <tr>
+                    <td>On this week:</td>
+                    <td>{{$weekPosts->count()}}</td>
+                </tr>
+                <tr>
+                    <td>Compared with last week:</td>
+                    <td>{{$compareWithLastWeek}}</td>
+                </tr>
+            </table>
+        </div>
         <div class="row">
-            <div class="col-sm-6">
-                <a href="{{ route('admin.category.create') }}" class="btn btn-block btn-outline-primary">Create category</a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <h4 class="list-group-item-heading">First category</h4>
-                    <p class="llist-group-item-text">Count</p>
-                </a>
-            </div>
-            <div class="col-sm-6">
+            <div class="col">
+                <div class="card-header text-center ">
+                    <h4 class="mb-0">Last posts</h4>
+                </div>
                 <a href="{{ route('post.create') }}" class="btn btn-block btn-outline-primary">Create material</a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <h4 class="list-group-item-heading">First material</h4>
-                    <p class="llist-group-item-text">Category</p>
-                </a>
+                @forelse($lastThreePosts as $post)
+                    <div class="post" data-id="{{$post->id}}">
+                        <div class="list-group list-group-horizontal-sm">
+                            <a href="{{route('post.show', ['post' => $post->slug])}}" class="list-group-item bg-light list-group-item-action">
+                                <h4 class="mb-1">{{$post->title}}</h4>
+                                <div class="postInfo font-weight-light">
+                                    <p><span class="createdAt"><i class="fa fa-calendar"></i> {{ $post->created_at->format('M d Y, H:i') }}</span>
+                                        <span class="commentsCount"><i class="fa fa-comments"></i> {{ $post->comments->count() }}</span></p>
+                                </div>
+                                <p class="mb-1">{{$post->shortDesc(130)}}</p>
+                            </a>
+                            <form id="post-edit-{{$post->id}}" action="{{ route('post.edit', ['post' => $post]) }}"></form>
+
+                            @include('admin.components.confirmModalWindow', [
+                                'model' => $post,
+                                'modalTitle'=>'Delete the post',
+                                'message' => 'Are you sure you want to delete the post: "' . $post->title . '" with all data?',
+                                'action' => route('post.destroy', ['post' => $post])
+                            ])
+                            <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="list-group-item btn btn-outline-primary"><i class="fa fa-trash"></i></button>
+
+                            <button class="list-group-item btn btn-outline-primary"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('post-edit-{{$post->id}}').submit();">
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center pt-3">
+                        <h1>There is nothing yet</h1>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
