@@ -24,11 +24,15 @@ class DashboardController extends Controller
     }
 
     private function getDiffInPercent(float $firstElement, float $secondElement){
-        if ($firstElement == 0) return '+100%';
+        if ($firstElement == 0) return [
+            "className" => "text-success",
+            "percentDiff" => "+100%",
+        ];
 
-        if ($secondElement == 0){
-            return '0%';
-        }
+        if ($secondElement == 0) return [
+            "className" => "text-success",
+            "percentDiff" => "0%",
+        ];
         else {
             $percentDiff = $firstElement / $secondElement * 100 - 100;
         }
@@ -39,8 +43,15 @@ class DashboardController extends Controller
 
         if ($percentDiff > 0){
             $percentDiff = '+' . $percentDiff;
+            $className = 'text-success';
+        }
+        else {
+            $className = 'text-danger';
         }
 
-        return $percentDiff  . '%';
+        return [
+            "className" => $className,
+            "percentDiff" => $percentDiff . '%',
+        ];
     }
 }
