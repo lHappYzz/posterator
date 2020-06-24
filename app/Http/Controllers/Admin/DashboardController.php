@@ -45,6 +45,9 @@ class DashboardController extends Controller
             $percentDiff = '+' . $percentDiff;
             $className = 'text-success';
         }
+        else if ($percentDiff == 0){
+            $className = 'text-success';
+        }
         else {
             $className = 'text-danger';
         }
