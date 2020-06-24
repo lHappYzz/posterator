@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('api')->get('/posts', function () {
+    $posts = \App\Post::exclude(['text','user_id'])->where('published', true)->get();
+    return json_encode($posts);
+});

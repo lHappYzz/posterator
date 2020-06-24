@@ -31,6 +31,31 @@
         .btn:focus, .btn:active {
             box-shadow: none !important;
         }
+        .input-group-prepend > span{
+            width: 150px;
+        }
+        .autocomplete {
+            position: relative;
+            overflow: visible;
+        }
+        .autocomplete > input {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .autocomplete-item {
+            position: absolute;
+
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            /*position the autocomplete items to be the same width as the container:*/
+            top: 100%;
+            left: 0;
+            right: 0;
+
+            max-height: 300px;
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
@@ -45,9 +70,17 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto"></ul>
 
-                </ul>
+                <form style="width: 100%" autocomplete="off" class="form-inline my-2 my-lg-0">
+                    <div style="width: 100%" class="autocomplete">
+                        <input style="width: 100%" id="searchBar" class="form-control" placeholder="Search">
+
+                        <div class="autocomplete-list">
+                            <div id="search-suggest" class="autocomplete-item search-suggest"></div>
+                        </div>
+                    </div>
+                </form>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -98,6 +131,53 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    const postList = document.getElementById('search-suggest');
+    const searchBar = document.getElementById('searchBar');
+    let posts = [];
+
+    searchBar.addEventListener('keyup', (e) => {
+        const searchString = e.target.value.toLowerCase();
+        if(searchString === '') {
+            hidePosts();
+            return false;
+        }
+
+        const filteredPosts = posts.filter((post) => {
+            return (
+                post.title.toLowerCase().includes(searchString)
+            );
+        });
+        displayPosts(filteredPosts);
+    });
+
+    const loadPosts = async () => {
+        try {
+            const res = await fetch('{{URL::to('/')}}/api/posts');
+            posts = await res.json();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    const displayPosts = (posts) => {
+        let htmlString = Object.values(posts)
+            .map((post) => {
+                return `
+            <a href="/post/${post.slug}" class="suggest_container list-group-item bg-light list-group-item-action">
+                <table>
+                    <tr>
+                        <td><h4>${post.title}</h4></td>
+                    </tr>
+                </table>
+            </a>
+        `;
+            })
+            .join('');
+        postList.innerHTML = htmlString;
+    };
+    function hidePosts() {
+        postList.innerHTML = '';
+    }
+    loadPosts();
 </script>
 @stack('scripts')
 

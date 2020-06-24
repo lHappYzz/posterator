@@ -46,7 +46,9 @@
                     </div>
                 </div>
             @empty
-                <h3>Missing data</h3>
+                <div class="text-center pt-3">
+                    <h3>Missing data</h3>
+                </div>
             @endforelse
             <div class="pagination">
                 <ul class="pagination">

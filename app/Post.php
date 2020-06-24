@@ -12,6 +12,7 @@ class Post extends Model
     public $timestamps = true;
     protected $table = 'posts';
     protected $fillable = ['title', 'slug', 'published', 'text', 'user_id', 'updated_at'];
+    protected $columns = ['id','title','slug','text', 'published', 'user_id', 'created_at', 'updated_at'];
 
     public function creator(){
         return $this->belongsTo('App\User', 'user_id', 'id');
@@ -45,5 +46,8 @@ class Post extends Model
         $weekEndDate = $now->endOfWeek()->format('Y-m-d');
 
         return $weekPosts = Post::all()->whereBetween('created_at',[$weekStartDate . '%', $weekEndDate . '%']);
+    }
+    public function scopeExclude($query,$value = array()){
+        return $query->select( array_diff($this->columns,(array) $value) );
     }
 }
