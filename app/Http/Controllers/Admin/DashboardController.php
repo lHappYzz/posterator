@@ -10,40 +10,48 @@ class DashboardController extends Controller
 {
     //
     public function index(){
-        $todayPosts = Post::with('created_at')->where('created_at','LIKE', date("Y-m-d") . '%')->count();
-        $lastWeekDayPosts = Post::with('created_at')->where('created_at','LIKE', substr(Carbon::now()->subDays(7),0,10) . '%')->count();
-        $compareWithLastWeekDay = $this->getCompares($todayPosts, $lastWeekDayPosts);
-
-        $weekPosts = $this->getWeekPosts(0);
-        $lastWeekPosts = $this->getWeekPosts(7);
-        $compareWithLastWeek = $this->getCompares($weekPosts, $lastWeekPosts);
-
+        $todayPosts = Post::getPostsByDaysAgo();
+        $weekPosts = Post::getPostsByWeeksAgo();
 
         return view('admin.dashboard',[
-            'totalPosts' => Post::all()->count(),
+            'posts' => Post::all(),
             'todayPosts' => $todayPosts,
-            'compareWithLastWeekDay' => ($compareWithLastWeekDay <= 0 ? '' : '+') . $compareWithLastWeekDay . '%',
+            'compareWithLastWeekDay' => $this->getDiffInPercent($todayPosts->count(), Post::getPostsByDaysAgo(7)->count()),
             'weekPosts' => $weekPosts,
-            'compareWithLastWeek' => ($compareWithLastWeek <= 0 ? '' : '+') . $compareWithLastWeek  . '%',
+            'compareWithLastWeek' => $this->getDiffInPercent($weekPosts->count(), Post::getPostsByWeeksAgo(1)->count()),
+            'lastThreePosts' => Post::getLatestPosts(),
         ]);
     }
 
-    private function getWeekPosts(int $subDays){
-        $now = Carbon::now()->subDays($subDays);
-        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
-        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+    private function getDiffInPercent(float $firstElement, float $secondElement){
+        if ($firstElement == 0) return [
+            "className" => "text-success",
+            "percentDiff" => "+100%",
+        ];
 
-        return $weekPosts = Post::with('created_at')->whereBetween('created_at',[$weekStartDate . '%', $weekEndDate . '%'])->count();
-    }
+        if ($secondElement == 0) return [
+            "className" => "text-success",
+            "percentDiff" => "0%",
+        ];
+        else {
+            $percentDiff = $firstElement / $secondElement * 100 - 100;
+        }
 
-    private function getCompares(float $firstElementToCompare, float $secondElementToCompare){
-        if ($secondElementToCompare == 0) return 100;
+        if ($percentDiff - floor($percentDiff) != 0){
+            $percentDiff = number_format($percentDiff, 2, '.', '');
+        }
 
-        $compare = $secondElementToCompare == 0 ? 0 : $firstElementToCompare / $secondElementToCompare * 100 - 100;
+        if ($percentDiff > 0){
+            $percentDiff = '+' . $percentDiff;
+            $className = 'text-success';
+        }
+        else {
+            $className = 'text-danger';
+        }
 
-        if ($compare - floor($compare) != 0)
-            $compare = number_format($compare, 2, '.', '');
-
-        return $compare;
+        return [
+            "className" => $className,
+            "percentDiff" => $percentDiff . '%',
+        ];
     }
 }

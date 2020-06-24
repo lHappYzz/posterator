@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -28,5 +29,21 @@ class Post extends Model
         $text = trim(substr($text, 0, $length ?? 255));
         $text .= '...';
         return $text;
+    }
+
+    public static function getLatestPosts(int $count = 3){
+        return Post::orderBy('created_at', 'desc')->limit($count)->get();
+    }
+
+    public static function getPostsByDaysAgo(int $daysAgo = 0){
+        return Post::whereDate('created_at', Carbon::today()->subDays($daysAgo))->get();
+    }
+
+    public static function getPostsByWeeksAgo(int $weeksAgo = 0){
+        $now = Carbon::now()->subWeeks($weeksAgo);
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+
+        return $weekPosts = Post::all()->whereBetween('created_at',[$weekStartDate . '%', $weekEndDate . '%']);
     }
 }
