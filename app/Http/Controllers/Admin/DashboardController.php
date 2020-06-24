@@ -24,14 +24,14 @@ class DashboardController extends Controller
     }
 
     private function getDiffInPercent(float $firstElement, float $secondElement){
-        if ($firstElement == 0) return [
-            "className" => "text-success",
-            "percentDiff" => "+100%",
-        ];
-
         if ($secondElement == 0) return [
             "className" => "text-success",
             "percentDiff" => "0%",
+        ];
+
+        if ($firstElement == 0) return [
+            "className" => "text-success",
+            "percentDiff" => "+100%",
         ];
         else {
             $percentDiff = $firstElement / $secondElement * 100 - 100;
