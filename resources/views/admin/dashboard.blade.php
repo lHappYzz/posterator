@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                     <td>Compared with same day on last week:</td>
-                    <td>{{$compareWithLastWeekDay}}</td>
+                    <td class="{{ $compareWithLastWeekDay['className'] }}">{{$compareWithLastWeekDay['percentDiff']}}</td>
                 </tr>
                 <tr>
                     <td>On this week:</td>
@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <td>Compared with last week:</td>
-                    <td>{{$compareWithLastWeek}}</td>
+                    <td class="{{ $compareWithLastWeek['className'] }}">{{$compareWithLastWeek['percentDiff']}}</td>
                 </tr>
             </table>
         </div>
@@ -65,7 +65,7 @@
                                 'message' => 'Are you sure you want to delete the post: "' . $post->title . '" with all data?',
                                 'action' => route('post.destroy', ['post' => $post])
                             ])
-                            <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="list-group-item btn btn-outline-primary"><i class="fa fa-trash"></i></button>
+                            <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="list-group-item btn btn-outline-danger"><i class="fa fa-trash"></i></button>
 
                             <button class="list-group-item btn btn-outline-primary"
                                     onclick="event.preventDefault();
