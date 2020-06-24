@@ -33,6 +33,9 @@
         .input-group-prepend > span{
             width: 150px;
         }
+        .btn:focus, .btn:active {
+            box-shadow: none !important;
+        }
     </style>
 
 </head>

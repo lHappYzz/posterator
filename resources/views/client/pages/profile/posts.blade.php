@@ -14,7 +14,7 @@
         <div class="post-list">
             @forelse($posts as $post)
                 <div class="post" data-id="{{$post->id}}">
-                    <div class="list-group list-group-horizontal-sm">
+                    <div class="list-group list-group-horizontal-lg">
                         <a href="{{route('post.show', ['post' => $post->slug])}}" class="list-group-item bg-light list-group-item-action">
                             <h4 class="mb-1">{{$post->title}}</h4>
                             <div class="postInfo font-weight-light">
@@ -23,6 +23,21 @@
                             </div>
                             <p class="mb-1">{{$post->shortDesc(130)}}</p>
                         </a>
+                        <form id="post-edit-{{$post->id}}" action="{{ route('post.edit', ['post' => $post]) }}"></form>
+
+                        @include('admin.components.confirmModalWindow', [
+                                'model' => $post,
+                                'modalTitle'=>'Delete the post',
+                                'message' => 'Are you sure you want to delete the post: "' . $post->title . '" with all data?',
+                                'action' => route('post.destroy', ['post' => $post])
+                            ])
+                        <button data-toggle="modal" data-target="#ModalCenter{{$post->id}}" type="button" value="delete" class="list-group-item btn btn-outline-danger"><i class="fa fa-trash"></i></button>
+
+                        <button class="list-group-item btn btn-outline-primary"
+                                onclick="event.preventDefault();
+                                    document.getElementById('post-edit-{{$post->id}}').submit();">
+                            Edit
+                        </button>
                         @if($post->published)
                             <button id="publicationButton" aria-hidden="true" data-status="published" data-id="{{$post->id}}" type="button" class="list-group-item btn btn-outline-success">Published</button>
                         @else
