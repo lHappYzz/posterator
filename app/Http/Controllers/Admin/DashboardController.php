@@ -38,7 +38,7 @@ class DashboardController extends Controller
         }
 
         if ($percentDiff > 0){
-            $percentDiff = '+' . $percentDiff . '%';
+            $percentDiff = '+' . $percentDiff;
         }
 
         return $percentDiff  . '%';
