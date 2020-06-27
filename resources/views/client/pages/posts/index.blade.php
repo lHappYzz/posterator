@@ -1,4 +1,5 @@
 @extends('admin.layouts.app_admin')
+@section('title', 'All posts')
 @section('content')
     <div class="container">
         @component('admin.components.breadcrumb')

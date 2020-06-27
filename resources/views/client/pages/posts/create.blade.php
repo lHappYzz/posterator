@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Create new post')
 @section('content')
     <div class="container">
         @if(Auth::user()->hasRole('admin'))

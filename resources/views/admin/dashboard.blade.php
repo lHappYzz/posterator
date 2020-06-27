@@ -1,4 +1,5 @@
 @extends('admin.layouts.app_admin')
+@section('title', 'Admin dashboard')
 @push('styles')
     <style>
         button.list-group-item{

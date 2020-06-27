@@ -1,4 +1,5 @@
-@extends('admin.layouts.app_admin')
+@extends('layouts.app')
+@section('title', $post->title ?? 'Update post')
 @section('content')
 
     <div class="container ck-content">

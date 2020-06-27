@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', $post->title ?? 'Post review')
 @push('styles')
     <link rel="stylesheet" href="{{asset('public/css/postShow.css')}}">
     <style>

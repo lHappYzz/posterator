@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'My posts')
 @push('styles')
     <style>
         button.list-group-item{
