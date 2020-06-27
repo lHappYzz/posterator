@@ -27,9 +27,11 @@ class Post extends Model
 
     public function shortDesc($length = null){
         $text = strip_tags($this->text);
+        $text = iconv('UTF-8','windows-1251',$text);
         $text = trim(substr($text, 0, $length ?? 255));
         $text .= '...';
-        return $text;
+        $text = iconv('windows-1251','UTF-8',$text);
+        return html_entity_decode($text);
     }
 
     public static function getLatestPosts(int $count = 3){
