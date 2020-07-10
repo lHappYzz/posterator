@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Post;
 use App\User;
 use Illuminate\Http\RedirectResponse;
@@ -54,10 +56,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return Redirector
      */
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
         //
-//        dd($request->all(), Auth::id());
 
         $post = Post::create([
             'title' => $request->post_title,
@@ -75,7 +76,7 @@ class PostController extends Controller
     public function storeComment(Request $request){
         if (Auth()->user()){
             $comment = Comment::create([
-                'comment' => $request->comment_text,
+                'comment' => htmlspecialchars($request->comment_text),
                 'post_id' => $request->postId,
                 'user_id' => Auth::id(),
                 'parent_comment_id' => $request->parent_comment_id ?? null,
@@ -128,7 +129,7 @@ class PostController extends Controller
      * @param  Post $post
      * @return Redirector
      */
-    public function update(Request $request, Post $post)
+    public function update(PostUpdateRequest $request, Post $post)
     {
         //
 //        dd('update method', $request->all());
