@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Comment\CommentStoreRequest;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Post;
@@ -73,8 +74,7 @@ class PostController extends Controller
             ->with(['success' => "'{$post->title}' post successfully created"]);
     }
 
-    public function storeComment(Request $request){
-        if (Auth()->user()){
+    public function storeComment(CommentStoreRequest $request){
             $comment = Comment::create([
                 'comment' => htmlspecialchars($request->comment_text),
                 'post_id' => $request->postId,
@@ -89,12 +89,6 @@ class PostController extends Controller
                 'created_at' => $comment->created_at->format('M d Y, H:i'),
             ];
             return json_encode($result);
-        } else {
-            $result = [
-                'error' => 'Log in to comment'
-            ];
-            return json_encode($result);
-        }
     }
 
     /**
