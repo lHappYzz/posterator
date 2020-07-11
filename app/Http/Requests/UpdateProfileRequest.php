@@ -26,7 +26,7 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            "user_name" => ['required', 'string', 'max:60'],
+            "user_name" => ['required', 'string', 'max:32'],
             "new_user_password" => ['sometimes', 'required', 'confirmed', 'different:old_user_password', 'min:8', 'max:254'],
         ];
     }
