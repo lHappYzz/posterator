@@ -4,6 +4,7 @@ namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 require_once 'htmlpurifier-4.13.0/library/HTMLPurifier.auto.php';
 
@@ -20,14 +21,27 @@ class PostStoreRequest extends FormRequest
     }
 
     /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function (Validator $validator) {
+            if(empty($validator->failed())){
+                $this->post_text = cleanHtml($this->post_text);
+            }
+        });
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        $request->post_text = cleanHtml($request->post_text ?? '');
-
         return [
             "post_title" => "required|max:256",
             "post_text" => "required",

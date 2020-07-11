@@ -18,10 +18,10 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Post title</span>
                     </div>
-                    <input type="text" class="form-control" name="post_title" maxlength="200" value="{{ $post->title }}" placeholder="Some title for the post">
+                    <input type="text" class="form-control" name="post_title" maxlength="200" value="{{ old('post_title') ?? $post->title }}" placeholder="Some title for the post">
                 </div>
                 <div class="input-group d-inline">
-                    <textarea name="post_text" id="editor">{{ $post->text }}</textarea>
+                    <textarea name="post_text" id="editor">{{ old('post_text') ?? $post->text }}</textarea>
                 </div>
                 <button type="submit" class="btn btn-outline-primary">Update</button>
             </div>

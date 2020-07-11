@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="input-group d-inline">
-                    <textarea name="post_text" id="editor"></textarea>
+                    <textarea name="post_text" id="editor">{{ old('post_text') }}</textarea>
                 </div>
             </div>
         </form>
