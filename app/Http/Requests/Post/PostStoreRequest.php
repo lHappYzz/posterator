@@ -43,7 +43,7 @@ class PostStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            "post_title" => "required|max:256",
+            "post_title" => "required|max:254",
             "post_text" => "required",
         ];
     }
