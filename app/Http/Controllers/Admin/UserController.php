@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Role;
 use App\User;
 use Illuminate\Contracts\View\View;
@@ -97,7 +98,7 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return RedirectResponse
      */
-    public function update(StoreUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         //
         $role = DB::table('roles')->where('name', $request->role_name)->first();

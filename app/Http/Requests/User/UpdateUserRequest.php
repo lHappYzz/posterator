@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
-class UpdateProfileRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +26,9 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             "user_name" => ['required', 'string', 'max:60'],
-            "new_user_password" => ['sometimes', 'required', 'confirmed', 'different:old_user_password', 'min:8', 'max:254'],
+            "user_email" => ['required', 'string', 'email', 'max:254', Rule::unique('users', 'email')->ignore($this->user->id)],
+            "role_name" => ['required', 'string', 'exists:roles,name', 'max:60'],
+            "user_password" => ['nullable', 'string', 'min:8', 'max:254'],
         ];
     }
 }
