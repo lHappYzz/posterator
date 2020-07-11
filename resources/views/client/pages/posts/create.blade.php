@@ -25,6 +25,8 @@
                         <button type="submit" class="btn btn-outline-primary">Create</button>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="input-group d-inline">
                     <textarea name="post_text" id="editor">{{ old('post_text') }}</textarea>
                 </div>
