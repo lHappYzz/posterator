@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('title', $post->title ?? 'Update post')
+
+@push('styles')
+    {{-- Push that script to head to momentarily create text editor on page --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
+@endpush
+
 @section('content')
 
     <div class="container ck-content">
@@ -33,10 +39,7 @@
     </div>
 @endsection
 @push('scripts')
-    <script type="text/javascript" src="/public/js/scripts.js?v=26"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
-    <script>
-
+    <script type="text/javascript">
         ClassicEditor
             .create( document.querySelector( '#editor' ), {
                 ckfinder: {
