@@ -35,6 +35,7 @@
                     <textarea name="post_text" id="editor">{{ old('post_text') ?? $post->text }}</textarea>
                 </div>
             </div>
+            @captcha
         </form>
     </div>
 @endsection

@@ -16,7 +16,6 @@ class CommentStoreRequest extends FormRequest
     {
         return Auth::check();
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,6 +25,9 @@ class CommentStoreRequest extends FormRequest
     {
         return [
             'comment_text' => 'required|max:254',
+            'postId' => 'required|numeric|exists:posts,id',
+            'parent_comment_id' => 'present|nullable|numeric|exists:comments,id',
+            'g-recaptcha-response' => 'required|captcha',
         ];
     }
 }

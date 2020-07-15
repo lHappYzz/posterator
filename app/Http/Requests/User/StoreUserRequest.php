@@ -29,6 +29,7 @@ class StoreUserRequest extends FormRequest
             "user_email" => ['required', 'string', 'email', 'max:254', 'unique:users,email'],
             "role_name" => ['required', 'string', 'exists:roles,name', 'max:60'],
             "user_password" => ['required', 'string', 'min:8', 'max:254'],
+            'g-recaptcha-response' => 'required|captcha',
         ];
     }
 }

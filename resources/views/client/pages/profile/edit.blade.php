@@ -12,6 +12,7 @@
         <hr>
         <form class="form" method="post" action="{{ route('user.page.profile.update', ['user' => $user->id]) }}">
             @method('put')
+            @captcha
             @csrf
             <div class="form-group">
                 <div class="form-group">

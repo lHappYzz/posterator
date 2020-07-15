@@ -13,6 +13,7 @@
         <form class="form" method="post" action="{{ route('admin.user.update', ['user' => $user]) }}">
             @method('put')
             @csrf
+            @captcha
             <div class="form-group">
                 <div class="form-group">
                     <div class="input-group">

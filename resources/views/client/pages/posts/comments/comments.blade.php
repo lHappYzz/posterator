@@ -8,9 +8,9 @@
                     {!! $comment->comment !!}
                 </div>
                 <div class="comment-action" id="comment-action-{{ $comment->id }}">
-                    <span onclick="showCommentForm({{$comment->id}})" id="answer" class="answer text-info">Reply</span>
+                    <button onclick="replyToComment({{$comment->id}})" id="answer" class="btn p-0 answer text-info">Reply</button>
                     @if($comment->child_comments->count() > 0)
-                        <span class="text-secondary" onclick="showAnswers(this, {{$comment->id}})" id="showMoreAnswer-{{$comment->id}}">Show answers</span>
+                        <button class="btn p-0 text-secondary show-more-answers" onclick="showAnswers(this, {{$comment->id}})" id="showMoreAnswer-{{$comment->id}}">Show answers</button>
                     @endif
                 </div>
             </div>

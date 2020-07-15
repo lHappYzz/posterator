@@ -8,13 +8,13 @@
                 <b>{{$comment->creator->name}}</b>, {{$comment->created_at->format('M d Y, H:i')}}
             </div>
             <div class="comment-text">
-                <a href="#comment-{{$parent_comment->id}}" onclick="animationFindParentComment(this, event)" class="badge badge-info">
+                <a href="#comment-{{$parent_comment->id}}" onclick="animationFindParentComment(this, event)" class="answerTo badge btn badge-info">
                     {{ '@' . $parent_comment->creator->name}}
                 </a>
                 {!! $comment->comment !!} {{--comment text--}}
             </div>
             <div class="comment-action">
-                <span onclick="showCommentForm({{$comment->id}})" id="answer" class="answer text-info">Reply</span>
+                <button onclick="replyToComment({{$comment->id}})" id="answer" class="btn p-0 answer text-info">Reply</button>
             </div>
 
         </li>

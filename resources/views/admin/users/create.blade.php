@@ -12,6 +12,7 @@
         <hr>
         <form class="form" method="post" action="{{ route('admin.user.store') }}">
             @csrf
+            @captcha
             <div class="form-group">
                 <div class="form-group">
                     <div class="input-group">

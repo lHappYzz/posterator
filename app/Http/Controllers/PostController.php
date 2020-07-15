@@ -79,7 +79,7 @@ class PostController extends Controller
                 'comment' => htmlspecialchars($request->comment_text),
                 'post_id' => $request->postId,
                 'user_id' => Auth::id(),
-                'parent_comment_id' => $request->parent_comment_id ?? null,
+                'parent_comment_id' => $request->parent_comment_id ?? null
             ]);
             $result = [
                 'id' => $comment->id,

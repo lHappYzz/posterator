@@ -2,6 +2,7 @@
 @section('title', $post->title ?? 'Post review')
 @push('styles')
     <link rel="stylesheet" href="{{asset('public/css/postShow.css')}}">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
     </style>
 @endpush
@@ -33,21 +34,23 @@
             </div>
             <div class="comments-block">
                 <hr>
-                <h2>Comments</h2>
+                <div class="d-inline-flex mb-2">
+                    <h2 class="mb-0 mr-2">Comments</h2>
+                    <button class="btn btn-outline-primary" onclick="removeReplierNameFromCommentForm()">New comment</button>
+                </div>
                 @auth
                     <div class="make-new-comment">
                         <form id="commentForm" class="form" action="{{route('comment.store')}}" method="post">
                             @csrf
+                            <input type="hidden" value="{{$post->id}}" name="postId">
+                            <input type="hidden" name="parent_comment_id">
                             <div class="form-group">
                                 <div class="input-group">
                                     <textarea required maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-primary" name="newComment" type="submit">Create</button>
+                                        <button class="btn btn-outline-primary g-recaptcha" name="newComment" type="submit" data-sitekey="6LcrRrEZAAAAAOgcmU_fDA1B2LqDmmB5hHQFRcN-" data-callback='callback'>Create</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" value="{{$post->id}}" name="postId" hidden>
                             </div>
                         </form>
                     </div>
@@ -62,14 +65,14 @@
 {{--TODO: Вынести этот мусор в отдельный файл--}}
 @push('scripts')
     <script type="text/javascript">
-        function showAnswers(spanElement, commentId) {
+        function showAnswers(ShowAnswersButton, commentId) {
             let commentReplies = document.getElementById('replies-'+commentId);
             if(commentReplies){
                 if (commentReplies.style.display === 'none'){
-                    spanElement.innerText = "Close answers";
+                    ShowAnswersButton.innerText = "Close answers";
                     commentReplies.style.display = 'block';
                 } else {
-                    spanElement.innerText = 'Show answers';
+                    ShowAnswersButton.innerText = 'Show answers';
                     commentReplies.style.display = 'none';
                 }
             } else {
@@ -93,48 +96,48 @@
             $('html, body').animate({scrollTop: $(parentCommentId).offset().top}, 200);
             return false;
         }
-        function showCommentForm(commentId){
-            let forms = document.forms;
-            Array.prototype.forEach.call(forms, function(form) {
-                if(form.id === 'answerCommentForm'){
-                    form.remove();
-                }
-            });
-            let form = `
-                <form id="answerCommentForm" class="form" action="{{route('comment.store')}}" method="post" >
-                    @csrf
-                    <div class="form-group">
-                        <div class="input-group">
-                            <textarea required maxlength="255" style="max-height: 150px; min-height: 50px" class="form-control" placeholder="Write a comment" name="comment_text" id="comment-text" cols="30" rows="10"></textarea>
-                            <div class="input-group-append">
-                                <button name="newComment" class="btn btn-outline-primary" type="submit">Create</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" value="{{$post->id}}" name="postId" hidden>
-                        <input type="text" value="${commentId}" name="parent_comment_id" hidden>
-                    </div>
-                </form>
-            `;
-            let repliesToComment = document.getElementById("replies-"+ commentId);
-            if (!repliesToComment) {
-                let comment = document.getElementById("comment-"+ commentId);
-                comment.insertAdjacentHTML('beforeEnd', form);
-                return;
+
+        function removeReplierNameFromCommentForm() {
+            let commentForm = document.getElementById('commentForm');
+            if (!commentForm) return false;
+
+            let replierNameOnForm = commentForm.querySelector('#replier-name');
+            if (!replierNameOnForm) return false;
+
+            //clear parent comment id input
+            commentForm.querySelector('[name="parent_comment_id"]').value = '';
+            replierNameOnForm.remove();
+        }
+        function replyToComment(commentId) {
+            // this function is required to initialize the form fields
+            let commentForm = document.getElementById('commentForm');
+            let parentCommentIdInput = commentForm.querySelector('[name="parent_comment_id"]');
+
+            let parentCommentName = document.getElementById('comment-' + commentId).getAttribute('data-creator');
+            parentCommentIdInput.value = commentId;
+
+            let replierNameOnCommentForm = commentForm.querySelector('#replier-name');
+            if (replierNameOnCommentForm){
+                replierNameOnCommentForm.remove();
             }
-            repliesToComment.insertAdjacentHTML('beforebegin', form);
+
+            let newReplierNameOnCommentForm = `
+                <div class="input-group-prepend" id="replier-name">
+                    <div class="input-group-text">
+                        <a href="#comment-${commentId}" onclick="animationFindParentComment(this, event)" class="input-group-text answerTo badge btn badge-info">
+                            @${parentCommentName}
+                        </a>
+                    </div>
+                </div>`;
+
+            commentForm.querySelector('[name="comment_text"]').insertAdjacentHTML('beforeBegin', newReplierNameOnCommentForm);
+            $('html, body').animate({scrollTop: $(commentForm).offset().top}, 200);
         }
 
         function findRepliesList(childCommentId) {
             let childComment = document.getElementById('comment-'+childCommentId);
-            let repliesList = childComment.parentElement;
-
-            if (repliesList.className === 'replies-list'){
-                return repliesList;
-            }
-            repliesList = document.getElementById('replies-list-'+childCommentId);
-            return repliesList;
+            //every comment is located in comment block and every comment block contain .replies-list
+            return childComment.closest('.comment-block').querySelector('.replies-list')
         }
         function checkRepliesListDisplayAttr(commentId) {
             let comment = document.getElementById('comment-'+commentId);
@@ -172,6 +175,7 @@
         function pasteComment(result) {
             let createdAt = result.created_at;
             if(result.parent_comment_id) {
+                //result has parent_comment_id only if that comment is reply to another comment
                 let parentCommentCreator = document.getElementById('comment-'+result.parent_comment_id).getAttribute('data-creator');
                 let commentHtml = `
                     <li class="reply-comment-item" id="comment-${result.id}" data-creator="${result.creator}" data-parent-id="${result.parent_comment_id}">
@@ -179,13 +183,13 @@
                             <b>${result.creator}</b>, ${createdAt}
                         </div>
                         <div class="comment-text">
-                            <a href="#comment-${result.parent_comment_id}" onclick="animationFindParentComment(this, event)" class="answerTo badge badge-info">
+                            <a href="#comment-${result.parent_comment_id}" onclick="animationFindParentComment(this, event)" class="answerTo badge btn badge-info">
                                 @${parentCommentCreator}
                             </a>
                             ${result.comment}
                         </div>
                         <div class="comment-action">
-                            <span onclick="showCommentForm(${result.id})" id="answer" class="answer text-info">Reply</span>
+                            <button onclick="replyToComment(${result.id})" id="answer" class="btn p-0 answer text-info">Reply</button>
                         </div>
                     </li>
                 `;
@@ -194,6 +198,7 @@
                 checkRepliesListDisplayAttr(result.id);
                 return;
             }
+            //If comment is not a reply than put it to the end of #comment list
             let commentList = document.getElementById('comment-list');
 
             let commentHtml = `
@@ -206,7 +211,7 @@
                             ${result.comment}
                         </div>
                         <div class="comment-action" id="comment-action-${result.id}">
-                            <span onclick="showCommentForm(${result.id})" id="answer" class="answer text-info">Reply</span>
+                            <button onclick="replyToComment(${result.id})" id="answer" class="btn p-0 answer text-info">Reply</button>
                         </div>
                     </div>
                     <div class="replies" id="replies-${result.id}" data-basic-comment-id="${result.id}" style="display: none">
@@ -216,53 +221,46 @@
             `;
             commentList.insertAdjacentHTML('beforeEnd', commentHtml);
         }
-        document.onsubmit = function (e) {
-            e.preventDefault();
+        function callback(token){
+            //this func is called after user passes captcha
+            return new Promise(function(resolve, reject) {
+                let commentForm = document.querySelector('#commentForm');
+                if (!commentForm) {
+                    grecaptcha.reset();
+                    reject('Can not find form');
+                }
+                let buttonSubmitButton = commentForm.querySelector('[type="submit"]');
 
-            let buttonFormElement = e.target.elements.namedItem('newComment');
+                let formData = new FormData(commentForm);
+                formData.append('g-recaptcha-response', token);
+                $.ajax({
+                    url: '{{ route('comment.store') }}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (result) {
+                        pasteComment(JSON.parse(result));
+                    },
+                    fail: function (result) {
 
-            buttonFormElement.disabled = true;
-            buttonFormElement.innerHTML = `
+                    }
+                });
+                grecaptcha.reset();
+                resolve();
+            });
+        }
+        function renderButton(buttonElement) {
+            if (buttonElement.disabled === false) {
+                buttonElement.disabled = true;
+                buttonElement.innerHTML = `
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Loading...
-            `;
-
-            let formData = new FormData;
-            if (e.target.id === 'commentForm'){
-                formData = new FormData(commentForm);
-                commentForm.elements.namedItem('comment_text').value = '';
-            } else if(e.target.id === 'answerCommentForm'){
-                formData = new FormData(answerCommentForm);
-                answerCommentForm.elements.namedItem('comment_text').value = '';
+                `;
             } else {
-                return;
+                buttonElement.disabled = false;
+                buttonElement.innerHTML = 'Create';
             }
-            let xhr = new XMLHttpRequest();
-            xhr.open('post', '{{route('comment.store')}}');
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200){
-
-                    buttonFormElement.disabled = false;
-                    buttonFormElement.innerHTML = 'Create';
-
-                    if (typeof answerCommentForm !== 'undefined') {
-                        answerCommentForm.remove();
-                    }
-
-                    let result = JSON.parse(xhr.responseText);
-                    if (result){
-                        if (result.error) {
-                            console.log(result.error);
-                            return false;
-                        }
-                        pasteComment(result);
-                    }
-                }
-                buttonFormElement.disabled = false;
-                buttonFormElement.innerHTML = 'Create';
-            };
-            xhr.send(formData);
-        };
+        }
     </script>
 @endpush

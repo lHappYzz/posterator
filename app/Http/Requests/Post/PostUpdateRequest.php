@@ -42,6 +42,7 @@ class PostUpdateRequest extends FormRequest
         return [
             "post_title" => "required|max:254",
             "post_text" => "required",
+            'g-recaptcha-response' => 'required|captcha',
         ];
     }
 }
