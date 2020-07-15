@@ -30,7 +30,8 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function (){
     Route::put('/update/{user}', 'ProfileController@update')->name('user.page.profile.update');
 });
 
-Route::resource('/post', 'PostController');
+Route::resource('/post', 'PostController')->except('show');
+Route::get('/post/{post}', 'PostController@show')->middleware('can.view-post')->name('post.show');
 Route::post('/post/publish', 'PostController@publish')->name('post.publish');
 Route::post('/comment', 'PostController@storeComment')->name('comment.store');
 Route::post('/uploads', 'CKEditorController@uploadImg')->name('image.upload');

@@ -13,9 +13,9 @@ class PostPolicy
 
     public function before(User $user)
     {
-        if ($user->hasRole('admin')) {
+        /*if ($user->hasRole('admin')) {
             return true;
-        }
+        }*/
     }
     /**
      * Determine whether the user can view any posts.
@@ -27,19 +27,6 @@ class PostPolicy
     {
         //
         return $user->hasRole('admin');
-    }
-
-    /**
-     * Determine whether the user can view the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function view(User $user, Post $post)
-    {
-        //
-        return true;
     }
 
     /**
