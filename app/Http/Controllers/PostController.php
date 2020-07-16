@@ -147,8 +147,9 @@ class PostController extends Controller
             DB::table('posts')
                 ->where('id', $request['id'])
                 ->update(['published' => true]);
+        } else {
+            $status = 'Invalid input';
         }
-        $status = 'Invalid input';
         $result = [
             'status' => $status,
         ];
