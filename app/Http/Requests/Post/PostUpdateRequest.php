@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 require_once 'htmlpurifier-4.13.0/library/HTMLPurifier.auto.php';
 
@@ -18,19 +17,10 @@ class PostUpdateRequest extends FormRequest
     {
         return true;
     }
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function (Validator $validator) {
-            if(empty($validator->failed())){
-                $this->post_text = cleanHtml($this->post_text);
-            }
-        });
+
+    public function passedValidation() {
+        //remove post text not valid html if request passed the validation
+        $this->post_text = cleanHtml($this->post_text);
     }
     /**
      * Get the validation rules that apply to the request.
@@ -40,8 +30,8 @@ class PostUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            "post_title" => "required|max:254",
-            "post_text" => "required",
+            'post_title' => 'required|max:254',
+            'post_text' => 'required',
             'g-recaptcha-response' => 'required|captcha',
         ];
     }
