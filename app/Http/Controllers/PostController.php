@@ -140,13 +140,19 @@ class PostController extends Controller
     public function publish(Request $request){
         $status = $request['status'];
         if ($status == 'published'){
-            DB::table('posts')
+            $query = DB::table('posts')
                 ->where('id', $request['id'])
                 ->update(['published' => false]);
+
+            if ($query) $status = 'not published';
+
         } else if($status == 'not published'){
-            DB::table('posts')
+            $query = DB::table('posts')
                 ->where('id', $request['id'])
                 ->update(['published' => true]);
+
+            if ($query) $status = 'published';
+
         } else {
             $status = 'Invalid input';
         }
