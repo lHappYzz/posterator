@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\CommentStoreRequest;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
@@ -14,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -23,7 +21,6 @@ class PostController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('auth')->except(['show', 'index']);
         $this->authorizeResource(Post::class, 'post', ['except' => ['show']]);
     }
 
@@ -126,8 +123,6 @@ class PostController extends Controller
     public function update(PostUpdateRequest $request, Post $post)
     {
         //
-//        dd('update method', $request->all());
-
         $post->update([
             'title' => $request->post_title,
             'text' => $request->post_text,
@@ -139,28 +134,24 @@ class PostController extends Controller
     }
 
     /**
-     * Publish the specified resource.
-     *
-     * @param  Post $post
-     * @return Redirector|RedirectResponse
+     * @param Request $request
+     * @return String
      */
     public function publish(Request $request){
-        $status = '';
-        if ($request['status'] == 'published'){
+        $status = $request['status'];
+        if ($status == 'published'){
             DB::table('posts')
                 ->where('id', $request['id'])
                 ->update(['published' => false]);
-            $status = 'not published';
-        } else if($request['status'] == 'not published'){
+        } else if($status == 'not published'){
             DB::table('posts')
                 ->where('id', $request['id'])
                 ->update(['published' => true]);
-            $status = 'published';
         }
+        $status = 'Invalid input';
         $result = [
             'status' => $status,
         ];
-
         return json_encode($result);
     }
     /**
