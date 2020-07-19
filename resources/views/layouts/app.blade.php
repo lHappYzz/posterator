@@ -24,6 +24,9 @@
 
     @stack('styles')
     <style>
+        .grecaptcha-badge {
+            z-index: 999;
+        }
         img {
             max-width: 100%;
         }
