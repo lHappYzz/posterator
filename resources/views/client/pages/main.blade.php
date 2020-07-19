@@ -8,7 +8,7 @@
         }
         div.title > a {
             color: black;
-            font-size: 35px;
+            font-size: 25px;
         }
         .post {
             padding-bottom: 10px;
