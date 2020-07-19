@@ -16,14 +16,10 @@
             @forelse($posts as $post)
                 <div class="post" data-id="{{$post->id}}">
                     <div class="list-group list-group-horizontal-lg">
-                        <a href="{{route('post.show', ['post' => $post->slug])}}" class="list-group-item bg-light list-group-item-action">
-                            <h4 class="mb-1">{{$post->title}}</h4>
-                            <div class="postInfo font-weight-light">
-                                <p><span class="createdAt"><i class="fa fa-calendar"></i> {{ $post->created_at->format('M d Y, H:i') }}</span>
-                                    <span class="commentsCount"><i class="fa fa-comments"></i> {{ $post->comments->count() }}</span></p>
-                            </div>
-                            <p class="mb-1">{{$post->shortDesc(130)}}</p>
-                        </a>
+
+                        {{-- render comment block --}}
+                        @include('admin.components.postElement', ['post' => $post])
+
                         <form id="post-edit-{{$post->id}}" action="{{ route('post.edit', ['post' => $post]) }}"></form>
 
                         @include('admin.components.confirmModalWindow', [

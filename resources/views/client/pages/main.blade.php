@@ -21,7 +21,7 @@
             @forelse($posts as $post)
                 <div class="post" data-id="{{$post->id}}">
                     <div class="title">
-                        <a href="{{ action('PostController@show', ['post' => $post->slug]) }}">{{ $post->title ?? 'none' }}</a>
+                        <a class="post-title" href="{{ action('PostController@show', ['post' => $post->slug]) }}">{{ $post->title ?? 'none' }}</a>
                     </div>
                     <div class="postInfo font-weight-light">
                         <p><span class="createdAt"><i class="fa fa-calendar"></i> {{ $post->created_at->format('M d Y, H:i') }}</span>

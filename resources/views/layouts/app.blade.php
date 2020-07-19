@@ -24,6 +24,9 @@
 
     @stack('styles')
     <style>
+        .post-title {
+            word-break: break-word;
+        }
         .grecaptcha-badge {
             z-index: 999;
         }

@@ -23,7 +23,7 @@
 
         <div class="blog-content">
             <div class="font-weight-bold">
-                <h1>{{ $post->title ?? 'none' }}</h1>
+                <h1 class="post-title">{{ $post->title ?? 'none' }}</h1>
                 <div class="creator font-weight-light">
                     <p>Written by <span class="creator-name">{{ $post->creator->name }}</span> {{ $post->updated_at->format('M d Y, H:i') }}</p>
                 </div>

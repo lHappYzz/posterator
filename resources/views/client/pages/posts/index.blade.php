@@ -1,5 +1,17 @@
 @extends('admin.layouts.app_admin')
 @section('title', 'All posts')
+
+@push('styles')
+    <style>
+        tr > td {
+            max-width: 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;"
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container">
         @component('admin.components.breadcrumb')
@@ -34,7 +46,7 @@
                     <td>{{ $post->created_at ?? 'none'}}</td>
                     <td>{{ $post->updated_at ?? 'none' }}</td>
                     <td>
-{{--                        <a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>--}}
+                        {{--<a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>--}}
                         <a class="btn btn-outline-primary" href="{{ action('PostController@show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>
                         @include('admin.components.confirmModalWindow', [
                             'model' => $post,
