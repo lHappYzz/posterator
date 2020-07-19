@@ -12,17 +12,7 @@
                 <hr>
                 <div class="user-last-material">
                     @if($lastPost)
-                        <a href="{{route('post.show', ['post' => $lastPost->slug])}}" class="list-group-item bg-light list-group-item-action">
-                            <h4 class="list-group-item-heading">{{$lastPost->title}}</h4>
-                            <div class="postInfo font-weight-light">
-                                <p><span class="createdAt"><i class="fa fa-calendar"></i> {{ $lastPost->created_at->format('M d Y, H:i') }}</span>
-                                    <i class="fa fa-user-circle"></i> <span class="createdBy">{{ $lastPost->creator->name }}</span>
-                                    <span class="commentsCount"><i class="fa fa-comments"></i> {{ $lastPost->comments->count() }}</span></p>
-                            </div>
-                            <div class="shortDesc">
-                                {{$lastPost->shortDesc(130)}}
-                            </div>
-                        </a>
+                        @include('admin.components.postElement', ['post' => $lastPost])
                     @endif
                 </div>
             </div>
