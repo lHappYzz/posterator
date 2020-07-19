@@ -24,7 +24,7 @@ class CommentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment_text' => 'required|max:254',
+            'comment_text' => 'required|max:190',
             'postId' => 'required|numeric|exists:posts,id',
             'parent_comment_id' => 'present|nullable|numeric|exists:comments,id',
             'g-recaptcha-response' => 'required|captcha',

@@ -30,7 +30,7 @@ class PostStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_title' => 'required|max:254',
+            'post_title' => 'required|max:190',
             'post_text' => 'required',
             'g-recaptcha-response' => 'required|captcha',
         ];

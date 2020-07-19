@@ -37,7 +37,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Post title</span>
                     </div>
-                    <input required type="text" class="form-control" name="post_title" maxlength="200" value="{{ old('post_title') }}" placeholder="Some title for the post">
+                    <input required type="text" class="form-control" name="post_title" maxlength="190" value="{{ old('post_title') }}" placeholder="Some title for the post">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-outline-primary">Create</button>
                     </div>

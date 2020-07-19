@@ -27,7 +27,7 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             "user_name" => ['required', 'string', 'max:32'],
-            "new_user_password" => ['sometimes', 'required', 'confirmed', 'different:old_user_password', 'min:8', 'max:254'],
+            "new_user_password" => ['sometimes', 'required', 'confirmed', 'different:old_user_password', 'min:8', 'max:190'],
             'g-recaptcha-response' => 'required|captcha',
         ];
     }

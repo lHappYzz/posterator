@@ -15,9 +15,9 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->nullable()->default(null);
+            $table->string('title');
             $table->boolean('published')->default(false);
-            $table->longText('text')->nullable()->default(null);
+            $table->longText('text');
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')
                 ->references('id')->on('users')
