@@ -23,20 +23,20 @@
                     <a href="{{ route('user.page.profile.edit') }}" class="list-group-item bg-light list-group-item-action">
                         <table>
                             <tr>
-                                <td><h4>{{ $user->name }}</h4></td>
+                                <td class="title" colspan="2"><h4>{{ $user->name }}</h4></td>
                             </tr>
                             <tr>
-                                <td>Registered: {{ $user->created_at->format('M d Y, H:i') }}</td>
+                                <td colspan="2">Registered: {{ $user->created_at->format('M d Y, H:i') }}</td>
                             </tr>
                             <tr>
-                                <td>Last update on: {{ $user->updated_at->format('M d Y, H:i') }}</td>
+                                <td colspan="2">Last update on: {{ $user->updated_at->format('M d Y, H:i') }}</td>
                             </tr>
                             <tr>
                                 <td>Email: {{ $user->email }}</td>
                                 <td>Verified: {!! $user->verified_at ? $user->verified_at->format('M d Y, H:i') : "<i class='fa fa-times-circle'></i>" !!}</td>
                             </tr>
                             <tr>
-                                <td>Role: {{ $user->role->name }}</td>
+                                <td colspan="2">Role: {{ $user->role->name }}</td>
                             </tr>
                         </table>
 

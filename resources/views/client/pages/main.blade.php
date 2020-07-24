@@ -21,16 +21,17 @@
             @forelse($posts as $post)
                 <div class="post" data-id="{{$post->id}}">
                     <div class="title">
-                        <a class="post-title" href="{{ action('PostController@show', ['post' => $post->slug]) }}">{{ $post->title ?? 'none' }}</a>
+                        <a href="{{ action('PostController@show', ['post' => $post->slug]) }}">{{ $post->title ?? 'none' }}</a>
                     </div>
                     <div class="postInfo font-weight-light">
                         <p><span class="createdAt"><i class="fa fa-calendar"></i> {{ $post->created_at->format('M d Y, H:i') }}</span>
-                        <i class="fa fa-user-circle"></i> <span class="createdBy">{{ $post->creator->name }}</span>
+                        <i class="fa fa-user-circle"></i> <span class="createdBy title">{{ $post->creator->name }}</span>
                         <span class="commentsCount"><i class="fa fa-comments"></i> {{ $post->comments->count() }}</span></p>
                     </div>
                     <div class="shortDesc">
                         {{ $post->shortDesc() }}
                     </div>
+                    <hr>
                 </div>
             @empty
                 <div class="text-center" >
