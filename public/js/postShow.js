@@ -1,5 +1,8 @@
 const commentForm = document.getElementById('commentForm');
-const commentStoreUrl = commentForm.dataset.commentUploadUrl;
+let commentStoreUrl = '';
+if (commentForm){
+    commentStoreUrl = commentForm.dataset.commentUploadUrl;
+}
 
 function showAnswers(ShowAnswersButton, commentId) {
     let commentReplies = document.getElementById('replies-'+commentId);
@@ -43,6 +46,9 @@ function removeReplierNameFromCommentForm() {
 }
 function replyToComment(commentId) {
     // this function is required to initialize the form fields
+
+    if (!commentForm) return false;
+
     let parentCommentIdInput = commentForm.querySelector('[name="parent_comment_id"]');
 
     let parentCommentName = document.getElementById('comment-' + commentId).getAttribute('data-creator');
@@ -156,8 +162,6 @@ function pasteComment(result) {
 function callback(token){
     //this func is called after user passes captcha
     return new Promise(function(resolve, reject) {
-        let buttonSubmitButton = commentForm.querySelector('[type="submit"]');
-
         let formData = new FormData(commentForm);
         formData.append('g-recaptcha-response', token);
         $.ajax({
@@ -166,26 +170,45 @@ function callback(token){
             processData: false,
             contentType: false,
             type: 'POST',
-            success: function (result) {
-                pasteComment(JSON.parse(result));
+            statusCode: {
+                422: function(result) {
+                    let resp = JSON.parse(result.responseText);
+                    displayErrors(resp.errors);
+                }
             },
-            fail: function (result) {
-
+            success: function (result) {
+                //remove errors messages if request passed with success
+                let errorCanvas = document.getElementById('errors-alert');
+                if (errorCanvas) {
+                    errorCanvas.innerHTML = '';
+                    errorCanvas.style.display = 'none';
+                }
+                clearCommentForm();
+                pasteComment(JSON.parse(result));
             }
         });
         grecaptcha.reset();
         resolve();
     });
 }
-function renderButton(buttonElement) {
-    if (buttonElement.disabled === false) {
-        buttonElement.disabled = true;
-        buttonElement.innerHTML = `
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                `;
-    } else {
-        buttonElement.disabled = false;
-        buttonElement.innerHTML = 'Create';
+function displayErrors(errors) {
+    let canvas = document.getElementById('errors-alert');
+    canvas.style.display = 'block';
+    canvas.innerHTML = '';
+    for (let element in errors) {
+        for (let elementMessage in errors[element]){
+            canvas.insertAdjacentHTML('beforeEnd', `<strong>
+                                                                    <li>${errors[element][elementMessage]}</li>
+                                                                </strong>`);
+        }
     }
+}
+function clearCommentForm() {
+    let commentForm = document.getElementById('commentForm');
+    if (!commentForm){
+        console.log('Can not find the comment form');
+        return false;
+    }
+
+    commentForm.querySelector('textarea').value = '';
 }

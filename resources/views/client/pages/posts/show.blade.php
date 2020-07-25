@@ -33,12 +33,19 @@
             </div>
             <div class="comments-block">
                 <hr>
-                <div class="d-inline-flex mb-2">
-                    <h2 class="mb-0 mr-2">Comments</h2>
-                    <button class="btn btn-outline-primary" onclick="removeReplierNameFromCommentForm()">New comment</button>
-                </div>
+                    <div class="d-inline-flex mb-2">
+                        <h2 class="mb-0 mr-2">Comments</h2>
+                        @auth
+                            <button class="btn btn-outline-primary" onclick="removeReplierNameFromCommentForm()">New comment</button>
+                        @endauth
+                    </div>
+
+                @guest
+                    <p class="text-center alert alert-warning">Log in to comment</p>
+                @endguest
                 @auth
                     <div class="make-new-comment">
+                        <div style="display: none" id="errors-alert" class="alert-danger p-1"></div>
                         <form id="commentForm" class="form" data-comment-upload-url="{{route('comment.store')}}" method="post">
                             @csrf
                             <input type="hidden" value="{{$post->id}}" name="postId">
