@@ -2,6 +2,10 @@
 @section('title', 'Profile')
 @push('styles')
     <style>
+        table {
+            width: 100%;
+            margin: auto;
+        }
     </style>
 @endpush
 @section('content')
