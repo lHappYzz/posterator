@@ -28,6 +28,9 @@
     <link rel="icon" href="{{ URL::to('/') . '/public/ckeditor/uploads/LogoIconGreen.png' }}" type="image/png">
     @stack('styles')
     <style>
+        .title {
+            word-break: break-word;
+        }
         img {
             max-width: 100%;
         }
