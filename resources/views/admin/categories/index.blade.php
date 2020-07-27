@@ -1,6 +1,6 @@
 @extends('admin.layouts.app_admin')
 @push('styles')
-    <link href="{{ asset('css/adminTableStyles.css') . "?v=" . filemtime(public_path() . "/css/adminTableStyles.css") }}" rel="stylesheet">
+    <link href="{{asset('public/css/adminTableStyles.css') . "?v=" . filemtime(public_path() . "/css/adminTableStyles.css") }}" rel="stylesheet">
 @endpush
 @section('content')
     <div class="container">

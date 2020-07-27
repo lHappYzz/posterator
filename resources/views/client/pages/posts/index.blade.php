@@ -2,7 +2,7 @@
 @section('title', 'All posts')
 
 @push('styles')
-    <link href="{{ asset('css/adminTableStyles.css') . "?v=" . filemtime(public_path() . "/css/adminTableStyles.css") }}" rel="stylesheet">
+    <link href="{{asset('public/css/adminTableStyles.css') . "?v=" . filemtime(public_path() . "/css/adminTableStyles.css") }}" rel="stylesheet">
 @endpush
 
 @section('content')
