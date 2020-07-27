@@ -2,14 +2,7 @@
 @section('title', 'All posts')
 
 @push('styles')
-    <style>
-        tr > td {
-            max-width: 200px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;"
-        }
-    </style>
+    <link href="{{ asset('css/adminTableStyles.css') . "?v=" . filemtime(public_path() . "/css/adminTableStyles.css") }}" rel="stylesheet">
 @endpush
 
 @section('content')
