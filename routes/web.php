@@ -11,7 +11,10 @@
 |
 */
 
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
@@ -19,6 +22,17 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth', 'r
     Route::get('/', 'DashboardController@index')->name('admin.index');
     Route::resource('/category', 'CategoryController', ['as'=>'admin']);
     Route::resource('/user', 'UserController', ['as'=>'admin']);
+    Route::get('/clear/cache', function() {
+        try {
+            Artisan::call('cache:clear');
+            Artisan::call('config:cache');
+            Artisan::call('view:clear');
+            Artisan::call('route:clear');
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return 'Cache successfully cleared';
+    });
 });
 
 Route::get('/', 'PagesController@mainPage')->name('user.page.main');
