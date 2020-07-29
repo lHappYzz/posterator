@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $post->title ?? 'Post review')
 @push('styles')
-    <link rel="stylesheet" href="{{asset('public/css/postShow.css')}}">
+    <link rel="stylesheet" href="{{asset('public/css/postShow.css'). "?v=" . filemtime(public_path() . "/css/postShow.css") }}">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
     </style>
