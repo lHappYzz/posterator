@@ -33,7 +33,7 @@ class PostController extends Controller
     {
         //
         return view('client.pages.posts.index',[
-            'posts' => Post::paginate(10),
+            'posts' => Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(10),
         ]);
     }
 

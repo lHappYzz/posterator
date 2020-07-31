@@ -22,7 +22,7 @@ class CategoryController extends Controller
     {
         //
         return view('admin.categories.index', [
-            'categories' => Category::paginate(10),
+            'categories' => Category::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(10),
         ]);
     }
 
