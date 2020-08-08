@@ -173,7 +173,15 @@ function callback(token){
             statusCode: {
                 422: function(result) {
                     let resp = JSON.parse(result.responseText);
-                    displayErrors(resp.errors);
+                    if (resp.errors){
+                        displayErrors(resp.errors);
+                    }
+                },
+                403: function (result) {
+                    let resp = JSON.parse(result.responseText);
+                    if (resp.message){
+                        displayMessage(resp.message);
+                    }
                 }
             },
             success: function (result) {
@@ -190,6 +198,14 @@ function callback(token){
         grecaptcha.reset();
         resolve();
     });
+}
+function displayMessage(message) {
+    let canvas = document.getElementById('errors-alert');
+    canvas.style.display = 'block';
+    canvas.innerHTML = '';
+    canvas.insertAdjacentHTML('beforeEnd', `<strong>
+                                                            <li>${message}</li>
+                                                        </strong>`);
 }
 function displayErrors(errors) {
     let canvas = document.getElementById('errors-alert');

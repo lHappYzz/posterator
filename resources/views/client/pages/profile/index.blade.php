@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <td>Email: {{ $user->email }}</td>
-                                <td>Verified: {!! $user->verified_at ? $user->verified_at->format('M d Y, H:i') : "<i class='fa fa-times-circle'></i>" !!}</td>
+                                <td>Verified: {!! isset($user->email_verified_at) ? $user->email_verified_at->format('M d Y, H:i') : "<i class='fa fa-times-circle'></i>" !!}</td>
                             </tr>
                             <tr>
                                 <td colspan="2">Role: {{ $user->role->name }}</td>
