@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,7 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
     public function role(){
-        return $this->belongsTo('App\Role', 'role_id', 'id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
     public function hasRole($findRole){
         $userRole = Auth::user()->role;
@@ -46,6 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
     public function posts(){
-        return $this->hasMany('App\Post', 'user_id', 'id');
+        return $this->hasMany(Post::class, 'user_id', 'id');
     }
 }

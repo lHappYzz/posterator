@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class CKEditorController extends Controller
 {
@@ -16,9 +13,6 @@ class CKEditorController extends Controller
         return ($mb > 0) ? $mb : 0;
     }
 
-    /**
-     * @return string
-     */
     protected function makeUploadDir(){
         $uploadDirectory = public_path() . DIRECTORY_SEPARATOR . "ckeditor" . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR;
 

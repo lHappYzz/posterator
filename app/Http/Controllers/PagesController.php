@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Post;
-use App\Role;
-use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller

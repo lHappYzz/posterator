@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Post;
-use Carbon\Carbon;
+use App\Models\Post;
 
 class DashboardController extends Controller
 {

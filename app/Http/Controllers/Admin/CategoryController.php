@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Category;
-use App\Child_category;
+use App\Models\Category;
+use App\Models\Child_category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -61,7 +60,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Models\Category  $category
      */
     public function show(Category $category)
     {
@@ -72,7 +71,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Models\Category  $category
      * @return View
      */
     public function edit(Category $category)
@@ -86,7 +85,7 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  StoreCategoryRequest $request
-     * @param  \App\Category  $category
+     * @param  \App\Models\Category  $category
      * @return Redirector|RedirectResponse
      */
     public function update(StoreCategoryRequest $request, Category $category)
@@ -133,7 +132,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Models\Category  $category
      * @return Redirector|RedirectResponse
      */
     public function destroy(Category $category)

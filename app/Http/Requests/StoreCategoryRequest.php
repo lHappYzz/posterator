@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Category;
-use App\Child_category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

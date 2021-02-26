@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Post;
-use App\Role;
-use App\User;
-use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 

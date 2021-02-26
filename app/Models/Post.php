@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -15,10 +15,10 @@ class Post extends Model
     protected $columns = ['id','title','slug','text', 'published', 'user_id', 'created_at', 'updated_at'];
 
     public function creator(){
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function comments(){
-        return $this->hasMany('App\Comment', 'post_id', 'id');
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
 
     public function getRouteKeyName(){

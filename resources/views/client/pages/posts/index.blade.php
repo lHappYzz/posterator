@@ -39,8 +39,7 @@
                     <td>{{ $post->created_at ?? 'none'}}</td>
                     <td>{{ $post->updated_at ?? 'none' }}</td>
                     <td>
-                        {{--<a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>--}}
-                        <a class="btn btn-outline-primary" href="{{ action('PostController@show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-outline-primary" href="{{ route('post.show', ['post' => $post->slug]) }}"><i class="fa fa-eye"></i></a>
                         @include('admin.components.confirmModalWindow', [
                             'model' => $post,
                             'modalTitle'=>'Delete the post',
