@@ -52,4 +52,10 @@ class Post extends Model
     public function scopeExclude($query,$value = array()){
         return $query->select( array_diff($this->columns,(array) $value) );
     }
+
+    public function publication(bool $status) {
+        $this->update(['published' => $status]);
+
+        return $this->published;
+    }
 }

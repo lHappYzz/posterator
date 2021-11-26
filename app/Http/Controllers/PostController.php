@@ -137,30 +137,18 @@ class PostController extends Controller
      * @param Request $request
      * @return String
      */
-    public function publish(Request $request){
-        $status = $request['status'];
-        if ($status == 'published'){
-            $query = DB::table('posts')
-                ->where('id', $request['id'])
-                ->update(['published' => false]);
+    public function publish(Request $request): string
+    {
+        $status = intval($request['status']);
+        $post = Post::findOrFail($request['id']);
+        $status = $post->publication($status);
 
-            if ($query) $status = 'not published';
-
-        } else if($status == 'not published'){
-            $query = DB::table('posts')
-                ->where('id', $request['id'])
-                ->update(['published' => true]);
-
-            if ($query) $status = 'published';
-
-        } else {
-            $status = 'Invalid input';
-        }
         $result = [
             'status' => $status,
         ];
         return json_encode($result);
     }
+
     /**
      * Remove the specified resource from storage.
      *

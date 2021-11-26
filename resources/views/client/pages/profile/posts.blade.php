@@ -36,9 +36,9 @@
                             Edit
                         </button>
                         @if($post->published)
-                            <button id="publicationButton" aria-hidden="true" data-status="published" data-id="{{$post->id}}" type="button" class="list-group-item btn btn-outline-success">Published</button>
+                            <button id="publicationButton" aria-hidden="true" data-status="true" data-id="{{$post->id}}" type="button" class="list-group-item btn btn-outline-success">Published</button>
                         @else
-                            <button id="publicationButton" aria-hidden="true" data-status="not published" data-id="{{$post->id}}" type="button" class="list-group-item btn btn-outline-danger">Not published</button>
+                            <button id="publicationButton" aria-hidden="true" data-status="false" data-id="{{$post->id}}" type="button" class="list-group-item btn btn-outline-danger">Not published</button>
                         @endif
                     </div>
                 </div>
@@ -61,6 +61,14 @@
         $(document).ready(function () {
             $('button#publicationButton').on('click', function () {
                 let status = this.getAttribute("data-status");
+
+                if (status === 'true') {
+                    status = 0;
+                } else {
+                    status = 1;
+                }
+                console.log(status);
+
                 let postId = this.getAttribute("data-id");
                 let element = this;
 
@@ -70,7 +78,7 @@
                     Loading...`;
                 $.ajax({
                     method: "POST",
-                    url: "/post/publish",
+                    url: "{{ route('post.publish') }}",
                     data: {
                         "_token": "{{ csrf_token() }}",
                         "id": postId,
@@ -81,17 +89,17 @@
                         element.disabled = false;
                         result = JSON.parse(result);
                         element.setAttribute('data-status', result.status);
-                        if(result.status === 'published'){
+                        if(result.status === true){
                             element.className = 'list-group-item btn btn-outline-success';
                             element.innerHTML = 'Published';
-                        } else {
+                        } else if(result.status === false) {
                             element.className = 'list-group-item btn btn-outline-danger';
                             element.innerHTML = 'Not published';
                         }
                     }
                 })
                 .fail(function() {
-                    if(status === 'published'){
+                    if(status === true){
                         element.className = 'list-group-item btn btn-outline-success';
                         element.innerHTML = 'Published';
                     } else {
